@@ -172,6 +172,11 @@ const FIREBASE_CONFIG = {
   appId: "1:358909691010:web:a39c0d80b212f9b608609b"
 };
 const DOC_PATH = ["santa2026", "game"];
+const NOTIFY_URL = "https://script.google.com/macros/s/AKfycbyM5vAEWYb43vbNMNGRALxU-aOdGzCC2z1-GoJI9vq9_80b2u9UI19gIrry_sj_a-XZog/exec";
+function notifySanta(id, kind){
+  if (!NOTIFY_URL.startsWith("https://")) return;
+  try { fetch(NOTIFY_URL, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain" }, body: JSON.stringify({ id, kind }) }).catch(()=>{}); } catch {}
+}
 
 /* =========================================================
    2. THE FAMILY
@@ -304,7 +309,7 @@ function vHome(){
   return `
   <section class="screen">
     <div class="hero">
-      <span class="eyebrow">Brouard · Guiet · Schultz · Hamburg · Palath · Coleman</span>
+      <span class="eyebrow">Family edition</span>
       <h1>Secret Santa <em>'26</em></h1>
       <p class="lede">Nine people. One family. One very simple gift exchange.</p>
       <div class="stamp">Good vibes and great gifts only</div>
@@ -532,6 +537,7 @@ function bind(){
     const btn = $app.querySelector("#saveBtn"); btn.disabled = true; btn.textContent = "Saving…";
     try {
       await store.saveProfile(id, { name, email, wishes, notes, updatedAt: new Date().toISOString(), ...(existing ? {} : { joinedAt: new Date().toISOString() }) });
+      notifySanta(id, existing ? "update" : "new");
       saveMe({ id });
       go(assignments()[id] ? "dash" : "draw", { me:id, pendingId:null });
     } catch (ex){
