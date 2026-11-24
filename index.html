@@ -28,7 +28,7 @@
   }
   #snow,#confetti{position:fixed;inset:0;pointer-events:none}
   #snow{z-index:0} #confetti{z-index:50}
-  main{position:relative;z-index:1;max-width:540px;margin:0 auto;padding:28px 18px 80px;min-height:100vh}
+  main{position:relative;z-index:1;max-width:540px;margin:0 auto;padding:28px 18px 190px;min-height:100vh}
   h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:800;letter-spacing:-.01em;line-height:1.05}
   .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
   .screen{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
@@ -151,12 +151,37 @@
   .foot{text-align:center;color:#8fa99b;font-size:13px;margin-top:40px}
   .banner{background:#5b1626;color:#ffd9df;border-radius:12px;padding:10px 12px;font-size:13px;margin-bottom:14px}
   .loading{display:grid;place-items:center;min-height:60vh;color:#cfe0d6;font-family:'Fraunces',serif;font-style:italic;font-size:20px}
+
+  /* Fact bar */
+  .factbar{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:0 12px calc(12px + env(safe-area-inset-bottom));pointer-events:none}
+  .fact{pointer-events:auto;max-width:540px;margin:0 auto;display:flex;gap:12px;align-items:flex-start;cursor:pointer;
+        background:rgba(9,28,23,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(224,169,64,.35);
+        border-radius:16px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.45);-webkit-tap-highlight-color:transparent;user-select:none}
+  .fact .ico{flex:none;font-size:22px;line-height:1;margin-top:2px}
+  .fact .lbl{display:flex;justify-content:space-between;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:3px}
+  .fact .lbl span:last-child{letter-spacing:.04em;color:#8fa99b;font-weight:500;text-transform:none}
+  .fact p{font-size:14px;line-height:1.4;color:#e8efe9;transition:opacity .35s, transform .35s}
+  .fact p.out{opacity:0;transform:translateY(4px)}
+  .fact .bar{height:2px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:8px;overflow:hidden}
+  .fact .bar b{display:block;height:100%;width:0;background:var(--gold);border-radius:2px}
+  .fact .bar b.run{animation:factfill linear forwards}
+  @keyframes factfill{to{width:100%}}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <canvas id="snow"></canvas>
 <canvas id="confetti"></canvas>
+<div class="factbar" aria-live="polite">
+  <div class="fact" id="fact" role="button" tabindex="0" aria-label="Christmas fact, tap for the next one">
+    <div class="ico" id="factIco">🎄</div>
+    <div style="flex:1;min-width:0">
+      <div class="lbl"><span>Christmas fact #<span id="factNum">1</span></span><span>tap for another ↻</span></div>
+      <p id="factText"></p>
+      <div class="bar"><b id="factBar"></b></div>
+    </div>
+  </div>
+</div>
 <main id="app"><div class="loading">Untangling the family tree…</div></main>
 
 <script type="module">
@@ -614,6 +639,139 @@ function confetti(){
   };
   tick();
 }
+
+/* =========================================================
+   9b. CHRISTMAS FACTS
+   ========================================================= */
+const FACTS = [
+  "'Jingle Bells' was the first song ever played in space. Gemini 6 astronauts performed it on a harmonica and sleigh bells in 1965.",
+  "England's Puritan Parliament banned Christmas in 1647. Mince pies and merrymaking went underground until 1660.",
+  "Celebrating Christmas was illegal in Boston from 1659 to 1681. Offenders were fined five shillings.",
+  "In 1914, British and German soldiers on the Western Front called an unofficial Christmas truce, swapped gifts and played football in no man's land.",
+  "In Japan, KFC is a Christmas tradition thanks to a 1974 'Kentucky for Christmas' campaign. Some families order their bucket weeks in advance.",
+  "In Catalonia, families feed a smiling log called the Caga Tió for weeks, then beat it with sticks on Christmas Eve until it 'poops' out presents.",
+  "Catalan nativity scenes often hide a 'caganer': a little figure of a man squatting with his trousers down. Yes, in the nativity scene.",
+  "Krampus, a horned demon from Alpine folklore, punishes naughty children on 5 December while St Nicholas rewards the good ones.",
+  "Icelandic folklore has a giant Yule Cat that eats anyone who didn't get new clothes before Christmas.",
+  "Iceland has 13 Yule Lads instead of one Santa, including Door Slammer, Sausage Swiper, Skyr Gobbler and Window Peeper.",
+  "Grýla, the mother of Iceland's Yule Lads, is said to come down from the mountains to cook naughty children in a stew.",
+  "In Norway, some people still hide their brooms on Christmas Eve so witches can't steal them for a joyride.",
+  "Spiderweb ornaments are a Ukrainian tradition, from a legend about spiders decorating a poor family's bare Christmas tree.",
+  "The first tinsel, made in 17th-century Germany, was real shredded silver.",
+  "The first electric Christmas tree lights were shown off in 1882 by Edward Johnson, a colleague of Thomas Edison: 80 red, white and blue bulbs.",
+  "Before electric lights, people decorated trees with real lit candles. Buckets of water nearby were strongly advised.",
+  "Rudolph was created in 1939 by Robert L. May as a free colouring book giveaway for the Montgomery Ward department store.",
+  "Rudolph was almost named Rollo or Reginald.",
+  "The song 'Rudolph the Red-Nosed Reindeer' was written by Johnny Marks, the brother-in-law of Rudolph's creator.",
+  "Bing Crosby's 'White Christmas' is listed by Guinness World Records as the best-selling single of all time, with an estimated 50 million copies sold.",
+  "'Silent Night' was first performed on Christmas Eve 1818 in Oberndorf, Austria, accompanied by a guitar because the church organ was broken (or so the story goes).",
+  "The X in 'Xmas' isn't lazy. It's the Greek letter chi, the first letter of Christ in Greek, and it's been used for centuries.",
+  "Mistletoe is a parasite. It grows on trees and steals their water and nutrients.",
+  "The word mistletoe is often traced to Old English words meaning 'dung on a twig', because birds spread the seeds in their droppings. Romantic.",
+  "Poinsettias are named after Joel Roberts Poinsett, the first US minister to Mexico, who brought them to America in the 1820s.",
+  "Poinsettias aren't actually deadly. That's a myth, though eating one will probably still upset your stomach.",
+  "The first commercial Christmas card was made in 1843 by Sir Henry Cole. Only around 1,000 were printed.",
+  "That first Christmas card was controversial because it showed a small child drinking a glass of wine.",
+  "Christmas crackers were invented in the 1840s by Tom Smith, a London sweet maker, inspired by French bonbons wrapped in twists of paper.",
+  "Santa's modern look owes a lot to Thomas Nast's cartoons in the 1860s. Coca-Cola's 1930s ads made it famous, but they didn't invent the red suit.",
+  "In the 1823 poem 'A Visit from St. Nicholas', Donner and Blitzen were originally called Dunder and Blixem: Dutch for thunder and lightning.",
+  "Male reindeer usually shed their antlers in early winter, while females keep theirs until spring. So Santa's antlered team is probably all girls.",
+  "Reindeer eyes change colour with the seasons: golden in summer, deep blue in winter, to help them see in the long Arctic darkness.",
+  "The real St Nicholas was a 4th-century bishop of Myra, a town in what is now Turkey.",
+  "In 1087, Italian sailors took the bones of St Nicholas from Myra and carried them off to Bari, Italy, where they still are today.",
+  "A medieval legend says St Nicholas brought three boys back to life after a butcher had killed them and pickled them in a barrel.",
+  "St Nicholas is the patron saint of children, sailors, merchants and pawnbrokers.",
+  "Canada Post gave Santa his own postal code: H0H 0H0.",
+  "NORAD's Santa tracker started in 1955 because a newspaper ad misprinted a phone number, and children ended up calling a military defence hotline.",
+  "Christmas Island in the Indian Ocean got its name because a ship captain sailed past it on Christmas Day in 1643.",
+  "Every year, tens of millions of red crabs march across Christmas Island to the sea to breed, and roads are closed to let them through.",
+  "The 'German Christmas pickle' ornament is mostly unknown in Germany. It's likely an American marketing invention.",
+  "The 12 days of Christmas start on Christmas Day and run until 5 January, the eve of Epiphany.",
+  "If you add up every gift in 'The Twelve Days of Christmas', including the repeats, your true love sent you 364 presents.",
+  "Christmas only became a federal holiday in the United States in 1870.",
+  "In Scotland, Christmas Day wasn't a public holiday until 1958. Hogmanay was the big celebration.",
+  "Stir-up Sunday, the last Sunday before Advent, is when British families traditionally make the Christmas pudding, with everyone taking a turn to stir and make a wish.",
+  "Coins used to be hidden in Christmas puddings for luck. Dentists were less enthusiastic.",
+  "Mince pies originally contained actual minced meat, mixed with fruit and spices.",
+  "It's not illegal to eat a mince pie on Christmas Day in England. That's a myth, so eat freely.",
+  "In 1826, a smuggled batch of whiskey eggnog started a riot at the US Military Academy at West Point. It's now known as the Eggnog Riot.",
+  "A drawing of Queen Victoria and Prince Albert's Christmas tree in 1848 made decorated trees hugely popular in Britain.",
+  "Norway has sent London a giant Christmas tree for Trafalgar Square every year since 1947, as thanks for Britain's help in World War II.",
+  "The first artificial Christmas trees were made in 19th-century Germany from goose feathers dyed green.",
+  "In the 1930s, the Addis Brush Company made artificial Christmas trees using the same machines it used to make toilet brushes.",
+  "A typical Christmas tree takes around 7 to 10 years to grow before it's ready to be cut.",
+  "Ethiopia celebrates Christmas, called Genna, on 7 January, as do many Orthodox churches that follow the old Julian calendar.",
+  "The Armenian Apostolic Church celebrates Christmas on 6 January.",
+  "In Caracas, Venezuela, people reportedly roller-skate to early morning Christmas mass, and some streets are closed to traffic for them.",
+  "A traditional Greenland winter delicacy, kiviak, is made by stuffing hundreds of small seabirds into a sealskin and leaving them to ferment for months.",
+  "In the Philippines, the Christmas season unofficially starts in September, as soon as the 'ber' months begin.",
+  "Every Christmas Eve since 1959, millions of Swedes have sat down at 3pm to watch the same Donald Duck Christmas special.",
+  "Since 1966, Sweden's giant straw Gävle Goat has been burned, smashed or vandalised more than 30 times. It has its own security now.",
+  "In Finland, a trip to the sauna is a classic part of Christmas Eve.",
+  "In much of Germany, Austria and Switzerland, presents are brought by the Christkind, a golden-haired angelic child, rather than Santa.",
+  "In Italy, a kindly witch called La Befana delivers presents on the night of 5 January, riding a broomstick.",
+  "Spain's Christmas lottery, El Gordo, drawn on 22 December, is the world's biggest lottery by total prize money.",
+  "In the Netherlands, Sinterklaas arrives by steamboat in mid-November. The legend says he sails in from Spain.",
+  "In the Czech Republic, families traditionally buy a live carp a few days before Christmas and keep it swimming in the bathtub until dinner.",
+  "An old Czech tradition: single women throw a shoe over their shoulder on Christmas Eve. If the toe points at the door, they'll marry within a year.",
+  "In Poland, families set an extra empty place at the Christmas Eve table for an unexpected guest or a wanderer.",
+  "Mexico's Las Posadas runs for nine nights from 16 to 24 December, re-enacting Mary and Joseph's search for somewhere to stay.",
+  "Every 23 December, the city of Oaxaca in Mexico holds the Night of the Radishes, a contest of elaborate sculptures carved from giant radishes.",
+  "On 7 December, people in Guatemala burn effigies of the devil to clear out evil before Christmas, in a tradition called La Quema del Diablo.",
+  "Christmas tree worms are real. They're colourful sea worms whose spiral plumes look exactly like tiny Christmas trees.",
+  "Holly berries are mildly poisonous to people. They look festive, though.",
+  "A real Christmas tree can carry thousands of tiny insects like aphids and mites into your home. Most of them are harmless and stay asleep.",
+  "A large Swedish study found heart attack risk peaks on Christmas Eve, at around 10pm.",
+  "Charles Dickens wrote 'A Christmas Carol' in about six weeks and published it himself in 1843. It sold out in days.",
+  "In 2017, conservators in Antarctica found a fruitcake about 100 years old from an early polar expedition. They said it looked and smelled 'almost edible'.",
+  "On Christmas Eve 1968, the Apollo 8 astronauts read from the Book of Genesis while orbiting the Moon. It was one of the most watched broadcasts in history at the time.",
+  "Paper hats in Christmas crackers are said to represent the crowns of the three wise men, or the Twelfth Night 'king' of medieval feasts.",
+  "Audubon's Christmas Bird Count began in 1900 as a replacement for the 'Christmas side hunt', a contest to shoot as many birds as possible.",
+  "Telling ghost stories at Christmas was a big Victorian tradition. 'A Christmas Carol' is literally a ghost story.",
+  "In wassailing, English villagers sing to apple trees, pour cider on their roots and bang pots to scare off evil spirits for a good harvest.",
+  "Medieval Christmas feasts often had a Lord of Misrule, a commoner put in charge of the festivities who could order the nobles around.",
+  "Snapdragon was a Victorian Christmas party game where you snatched raisins out of a bowl of burning brandy and ate them while they were still alight.",
+  "Twelfth Night cakes used to hide a bean inside. Whoever found it was crowned king of the party for the night.",
+  "The Roman festival of Saturnalia in December involved gift giving, feasting, and masters serving their slaves at the table.",
+  "The Bible never gives a date for Jesus' birth. 25 December was settled on by the church centuries later.",
+  "The name Santa Claus comes from Sinterklaas, the Dutch name for St Nicholas.",
+  "Mariah Carey's 'All I Want for Christmas Is You' only hit No. 1 in the US charts in 2019, 25 years after it came out.",
+  "Wham!'s 'Last Christmas' finally reached No. 1 in the UK in January 2021, 36 years after its release.",
+  "Tchaikovsky's 'The Nutcracker' got a lukewarm reception at its 1892 premiere. Now it's performed every December around the world.",
+  "The French Bûche de Noël cake is shaped like the Yule log families once burned in the fireplace over the Christmas period.",
+  "In some parts of France, St Nicholas is joined by Père Fouettard, 'Father Whipper', who carries a whip for misbehaving children.",
+  "Belsnickel, a fur-clad gift giver from German folklore, would hand out sweets to good children and give naughty ones a swat with a switch.",
+  "In Alpine folklore, the winter goddess Perchta was said to slit open the bellies of lazy people and stuff them with straw. Merry Christmas.",
+  "The Mari Lwyd is a Welsh midwinter tradition where a horse's skull on a pole, draped in a white sheet, goes door to door challenging people to a battle of rhymes.",
+  "In Japan, Christmas Eve is more of a romantic date night than a family holiday.",
+  "In China, it's become popular to give apples on Christmas Eve, because the word for Christmas Eve sounds a bit like the word for apple.",
+  "In Australia, beetles called Christmas beetles appear around December, which is how they got the name.",
+  "The White House has had a National Christmas Tree since 1923.",
+];
+
+(function factBar(){
+  const ICONS = ["🎄","🎁","⛄","🦌","🔔","🕯️","🍪","❄️","🎅","⭐"];
+  const order = shuffle(FACTS.map((_,i)=>i));
+  let k = 0, timer = null;
+  const el = document.getElementById("factText"), num = document.getElementById("factNum"),
+        ico = document.getElementById("factIco"), bar = document.getElementById("factBar");
+  const show = (first) => {
+    const i = order[k % order.length];
+    const swap = () => {
+      el.textContent = FACTS[i]; num.textContent = i + 1; ico.textContent = ICONS[k % ICONS.length];
+      el.classList.remove("out");
+      const ms = Math.max(12000, FACTS[i].length * 95);
+      bar.classList.remove("run"); void bar.offsetWidth; bar.style.animationDuration = ms + "ms"; bar.classList.add("run");
+      clearTimeout(timer); timer = setTimeout(() => { k++; show(); }, ms);
+    };
+    if (first) swap(); else { el.classList.add("out"); setTimeout(swap, 350); }
+  };
+  const next = () => { k++; show(); };
+  const box = document.getElementById("fact");
+  box.onclick = next;
+  box.onkeydown = e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); next(); } };
+  show(true);
+})();
 
 /* =========================================================
    10. BOOT
