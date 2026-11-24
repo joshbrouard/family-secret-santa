@@ -177,15 +177,15 @@ const DOC_PATH = ["santa2026", "game"];
    2. THE FAMILY
    ========================================================= */
 const PEOPLE = [
-  { id:"joshua",  name:"Joshua Julien Brouard", first:"Joshua",      tag:"The organiser and resident tech nerd.", color:"#b3263e" },
-  { id:"bianca",  name:"Bianca Palath",         first:"Bianca",      tag:"Joshua's girlfriend.",            color:"#c0567a" },
-  { id:"bevan",   name:"Bevan Guiet",           first:"Bevan",       tag:"Gentleman and PlayStation pro.",        color:"#2f6f8f" },
-  { id:"cherie",  name:"Cherie Guiet",          first:"Cherie",      tag:"Mom of two. Kindest person here.",          color:"#8a4fb0" },
-  { id:"ethan",   name:"Ethan Schultz",         first:"Ethan",       tag:"Schultz brother.",                color:"#3c8a5c" },
-  { id:"jesse",   name:"Jesse Schultz",         first:"Jesse",       tag:"Schultz brother. New office guy.",                color:"#c96f2d" },
-  { id:"heather", name:"Heather Coleman",       first:"Heather",     tag:"Teacher. Professional small-human wrangler.",             color:"#d18a9e" },
-  { id:"jp",      name:"Jean-Pierre Brouard",   first:"Jean-Pierre", tag:"Dad. Practical man, top-tier gift giver.",                         color:"#5a6b7a" },
-  { id:"theresa", name:"Theresa Hamburg",       first:"Theresa",     tag:"Mom. Queen of practical.",                color:"#a8772a" },
+  { id:"joshua",  name:"Joshua Julien Brouard", first:"Joshua",      tag:"Resident tech nerd.", color:"#b3263e" },
+  { id:"bianca",  name:"Bianca Palath",         first:"Bianca",      tag:"Lover of all things Shein.",            color:"#c0567a" },
+  { id:"bevan",   name:"Bevan Guiet",           first:"Bevan",       tag:"Tallest guy in the room.",        color:"#2f6f8f" },
+  { id:"cherie",  name:"Cherie Guiet",          first:"Cherie",      tag:"Resident dessert expert.",          color:"#8a4fb0" },
+  { id:"ethan",   name:"Ethan Schultz",         first:"Ethan",       tag:"PC pro.",                color:"#3c8a5c" },
+  { id:"jesse",   name:"Jesse Schultz",         first:"Jesse",       tag:"Newfound office worker. Fuelled by coffee and calendar invites.",                color:"#c96f2d" },
+  { id:"heather", name:"Heather Coleman",       first:"Heather",     tag:"Professional dealer of small humans (aka teacher).",             color:"#d18a9e" },
+  { id:"jp",      name:"Jean-Pierre Brouard",   first:"Jean-Pierre", tag:"Top-tier gift giver.",                         color:"#5a6b7a" },
+  { id:"theresa", name:"Theresa Hamburg",       first:"Theresa",     tag:"Board games pro.",                color:"#a8772a" },
 ];
 const BY_ID = Object.fromEntries(PEOPLE.map(p => [p.id, p]));
 const IDS = PEOPLE.map(p => p.id);
@@ -202,19 +202,19 @@ const JOKES = {
     theresa: "Your son, the family tech nerd. Anything with a plug will do. He'll happily explain how it works for 45 minutes.",
   },
   bianca: {
-    _: "Bianca! Have a good look at her wish list, pick something thoughtful, and enjoy being her favourite person for a day.",
+    _: "Bianca, lover of all things Shein. Her wish list is probably three tabs of a Shein cart. Pick one and you're golden.",
   },
   bevan: {
-    _: "Bevan. Gentleman, all-round nice guy, PlayStation enthusiast. A PlayStation voucher fits the budget nicely. Just saying.",
+    _: "Bevan. Tallest guy in the room and a PlayStation enthusiast. A PlayStation voucher fits the budget nicely. Just saying.",
   },
   cherie: {
-    _: "Cherie. Officially the kindest person in this app. Something cosy and just for her (not for the kids, for once) will go down a treat.",
+    _: "Cherie, resident dessert expert. Something sweet, something cosy, or anything just for her (not for the kids, for once) will go down a treat.",
   },
   ethan: {
-    _: "Ethan! Have a look at his wish list below and choose something from it. That's the best way to get it right.",
+    _: "Ethan, our PC pro! Something for his PC setup or anything from his wish list below is a great choice.",
   },
   jesse: {
-    _: "Jesse. Recently traded being his own boss for office life. Something for the desk, the commute or surviving Monday meetings is a solid bet.",
+    _: "Jesse, newfound office worker. Help him survive the grind: something for the desk, the coffee or the next meeting that could have been an email.",
   },
   heather: {
     _: "Heather. She's a teacher, so she already owns roughly 400 'World's Best Teacher' mugs. Do not be mug number 401.",
@@ -225,11 +225,11 @@ const JOKES = {
     theresa: "Jean-Pierre. Your EX-HUSBAND. Of all the names in the hat! Keep it festive, keep it under R200, and maybe keep the receipt.",
   },
   theresa: {
-    _: "Theresa. Practical to the core. Something useful she'll actually reach for every week beats anything fancy.",
-    joshua: "Mom! Practical always wins with her. Something useful she'll actually use beats anything flashy.",
-    cherie: "Mom! Practical always wins with her. Something useful she'll actually use beats anything flashy.",
-    ethan: "Mom! Practical always wins with her. Something useful she'll actually use beats anything flashy.",
-    jesse: "Mom! Practical always wins with her. Something useful she'll actually use beats anything flashy.",
+    _: "Theresa, board games pro. A new game for game night, or something practical she'll actually use, both fit the budget.",
+    joshua: "Mom, the board games pro! A new game for game night, or something practical she'll actually use.",
+    cherie: "Mom, the board games pro! A new game for game night, or something practical she'll actually use.",
+    ethan: "Mom, the board games pro! A new game for game night, or something practical she'll actually use.",
+    jesse: "Mom, the board games pro! A new game for game night, or something practical she'll actually use.",
     jp: "Theresa. Your EX-WIFE. The universe clearly has a sense of humour. Something practical, R200 max, then back away slowly.",
   },
 };
