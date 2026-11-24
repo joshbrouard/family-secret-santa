@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Family Secret Santa 2026</title>
+<meta name="description" content="Nine people. One wildly complicated family tree. R150 to R200 each.">
+<meta property="og:title" content="Family Secret Santa 2026 🎁">
+<meta property="og:description" content="Nine people. One wildly complicated family tree. Pick your name, write your wish list, unwrap your person.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,800;1,9..144,500;1,9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>">
+<style>
+  :root{
+    --night:#0d2620; --pine:#16392f; --pine-2:#1f4a3d;
+    --cream:#f7f0e3; --paper:#fffaf1; --ink:#1d1a17; --muted:#6f665c;
+    --berry:#b3263e; --berry-dark:#8c1a2e; --gold:#e0a940; --gold-soft:#f3d9a1;
+    --mint:#7fc6a4;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:'Outfit',system-ui,sans-serif; color:var(--cream);
+    background:radial-gradient(120% 80% at 50% 0%, var(--pine-2) 0%, var(--night) 60%) fixed, var(--night);
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  #snow,#confetti{position:fixed;inset:0;pointer-events:none}
+  #snow{z-index:0} #confetti{z-index:50}
+  main{position:relative;z-index:1;max-width:540px;margin:0 auto;padding:28px 18px 80px;min-height:100vh}
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:800;letter-spacing:-.01em;line-height:1.05}
+  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .screen{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  /* Hero */
+  .hero{text-align:center;padding:26px 0 8px}
+  .hero h1{font-size:clamp(46px,13vw,72px);margin:12px 0 6px}
+  .hero h1 em{font-style:italic;font-weight:700;color:var(--gold)}
+  .hero p.lede{color:#cfe0d6;font-size:17px;max-width:30ch;margin:0 auto}
+  .tag{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:6px 12px;border-radius:999px;font-size:13px;color:#e8efe9}
+  .stamp{display:inline-block;margin-top:18px;transform:rotate(-3deg);border:2px dashed var(--gold);color:var(--gold-soft);padding:8px 14px;border-radius:10px;font-family:'Fraunces',serif;font-style:italic;font-size:15px}
+  .budget{margin:26px auto 0;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+  .budget .pill{background:var(--cream);color:var(--ink);border-radius:14px;padding:12px 16px;text-align:left;min-width:140px}
+  .budget .pill b{display:block;font-family:'Fraunces',serif;font-size:24px}
+  .budget .pill span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+
+  .rules{margin:28px 0 6px;display:grid;gap:10px}
+  .rule{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 14px;font-size:15px;color:#dfe9e2}
+  .rule .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--berry);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+
+  /* Buttons */
+  .btn{appearance:none;border:0;cursor:pointer;font:600 17px 'Outfit',sans-serif;border-radius:14px;padding:16px 22px;width:100%;
+       background:var(--berry);color:#fff;box-shadow:0 6px 0 var(--berry-dark);transition:transform .08s, box-shadow .08s, opacity .2s}
+  .btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--berry-dark)}
+  .btn:disabled{opacity:.55;cursor:not-allowed}
+  .btn.gold{background:var(--gold);color:var(--ink);box-shadow:0 6px 0 #a87822}
+  .btn.ghost{background:transparent;color:var(--cream);box-shadow:none;border:1.5px solid rgba(255,255,255,.25);font-weight:500}
+  .btn.small{padding:10px 14px;font-size:15px;width:auto}
+  .row{display:flex;gap:10px} .row>*{flex:1}
+  .mt{margin-top:22px} .mt-s{margin-top:12px}
+  .link{background:none;border:0;color:var(--gold-soft);text-decoration:underline;font:inherit;cursor:pointer;padding:4px}
+  .center{text-align:center}
+
+  /* Back bar */
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .back{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:var(--cream);border-radius:999px;padding:8px 14px;font:500 14px 'Outfit';cursor:pointer}
+  .steps{display:flex;gap:6px}
+  .steps i{width:26px;height:5px;border-radius:9px;background:rgba(255,255,255,.18)}
+  .steps i.on{background:var(--gold)}
+
+  /* Picker */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:18px}
+  .person{position:relative;text-align:left;cursor:pointer;border:0;font:inherit;background:var(--cream);color:var(--ink);border-radius:var(--radius);padding:14px;
+          box-shadow:0 4px 0 rgba(0,0,0,.25);transition:transform .15s}
+  .person:hover{transform:translateY(-3px) rotate(-.6deg)}
+  .person:nth-child(even):hover{transform:translateY(-3px) rotate(.6deg)}
+  .avatar{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:800;font-size:18px;color:#fff;margin-bottom:10px}
+  .person b{display:block;font-size:16px;line-height:1.15}
+  .person small{display:block;color:var(--muted);font-size:12.5px;margin-top:4px;line-height:1.3}
+  .badge{position:absolute;top:10px;right:10px;font-size:11px;font-weight:700;background:var(--mint);color:#0e3326;border-radius:999px;padding:3px 8px}
+
+  /* Cards & forms */
+  .card{background:var(--paper);color:var(--ink);border-radius:22px;padding:22px 20px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+  .card h2{font-size:30px;margin-bottom:6px}
+  .card p.sub{color:var(--muted);font-size:15px}
+  label{display:block;font-size:13px;font-weight:600;color:#4b443d;margin:16px 0 6px;letter-spacing:.02em}
+  input,textarea{width:100%;font:16px 'Outfit',sans-serif;color:var(--ink);background:#fff;border:1.5px solid #e2d8c8;border-radius:12px;padding:13px 14px;outline:none;transition:border .15s, box-shadow .15s}
+  input:focus,textarea:focus{border-color:var(--berry);box-shadow:0 0 0 4px rgba(179,38,62,.12)}
+  textarea{min-height:74px;resize:vertical}
+  .wish{display:flex;align-items:center;gap:10px;margin-top:10px}
+  .wish .num{flex:none;width:30px;height:30px;border-radius:9px;background:var(--gold-soft);color:#6b4a0d;display:grid;place-items:center;font-weight:700;font-family:'Fraunces',serif}
+  .hint{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+  .err{color:var(--berry);font-size:14px;margin-top:12px;font-weight:600;min-height:1em}
+  .note{background:#fff3d6;border:1px solid #f0d797;color:#6b4a0d;border-radius:12px;padding:10px 12px;font-size:14px;margin-top:14px}
+
+  /* Gift */
+  .stage{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:10px}
+  .stage h2{font-size:34px}
+  .stage p{color:#cfe0d6;margin-top:6px}
+  .gift{position:relative;width:200px;height:200px;margin:46px auto 18px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+  .gift .box{position:absolute;bottom:0;left:10px;width:180px;height:140px;background:var(--berry);border-radius:10px;box-shadow:inset 0 -18px 0 rgba(0,0,0,.12),0 18px 30px rgba(0,0,0,.4);
+     background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.18) 0 4px,transparent 5px),radial-gradient(circle at 70% 65%,rgba(255,255,255,.18) 0 4px,transparent 5px);background-size:46px 46px}
+  .gift .box:after{content:"";position:absolute;left:78px;top:0;bottom:0;width:24px;background:var(--gold)}
+  .gift .lid{position:absolute;top:28px;left:0;width:200px;height:44px;background:var(--berry-dark);border-radius:10px;z-index:2;transition:transform .7s cubic-bezier(.3,1.6,.5,1),opacity .7s}
+  .gift .lid:after{content:"";position:absolute;left:88px;top:0;bottom:0;width:24px;background:var(--gold)}
+  .bow{position:absolute;left:50%;top:-34px;width:0;height:0;z-index:3}
+  .bow:before,.bow:after{content:"";position:absolute;width:52px;height:38px;border:10px solid var(--gold);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;top:0}
+  .bow:before{right:4px;transform:rotate(-24deg)} .bow:after{left:4px;transform:rotate(24deg)}
+  .gift.shake{animation:shake .45s}
+  @keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-9deg) scale(1.04)}40%{transform:rotate(8deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+  .gift.open .lid{transform:translate(70px,-150px) rotate(38deg);opacity:0}
+  .gift.open{cursor:default}
+  .taps{display:flex;gap:8px;justify-content:center;margin-top:6px}
+  .taps i{width:12px;height:12px;border-radius:50%;border:2px solid var(--gold)}
+  .taps i.on{background:var(--gold)}
+
+  .reveal{width:100%;margin-top:-20px;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+  @keyframes pop{from{opacity:0;transform:translateY(40px) scale(.9)}to{opacity:1;transform:none}}
+  .reveal .card{text-align:center}
+  .reveal .avatar{width:78px;height:78px;font-size:30px;margin:-58px auto 10px;border:5px solid var(--paper)}
+  .reveal h2{font-size:38px}
+  .joke{font-family:'Fraunces',serif;font-style:italic;font-size:19px;line-height:1.35;color:var(--berry-dark);margin:12px auto 4px;max-width:30ch}
+
+  /* Dashboard */
+  .hello{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+  .hello h1{font-size:30px}
+  .target{position:relative;overflow:hidden}
+  .target .ribbon{position:absolute;top:0;right:28px;width:22px;height:100%;background:var(--gold);opacity:.18}
+  .target .who{display:flex;align-items:center;gap:14px;margin:6px 0 4px}
+  .target .who .avatar{margin:0;width:60px;height:60px;font-size:24px}
+  .target h2{font-size:32px}
+  .list{list-style:none;margin-top:16px;display:grid;gap:8px}
+  .list li{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1.5px solid #efe5d4;border-radius:12px;padding:12px;font-size:16px;line-height:1.35;word-break:break-word}
+  .list li .num{flex:none;width:26px;height:26px;border-radius:8px;background:var(--gold-soft);color:#6b4a0d;display:grid;place-items:center;font-weight:700;font-size:13px}
+  .list a{color:var(--berry);font-weight:600}
+  .waiting{margin-top:16px;border:2px dashed #e0d3bd;border-radius:14px;padding:18px;text-align:center;color:var(--muted)}
+  .waiting .dots{font-size:28px;letter-spacing:4px;animation:blink 1.4s infinite}
+  @keyframes blink{50%{opacity:.3}}
+  .section-title{font-family:'Fraunces',serif;font-size:22px;margin:30px 0 10px}
+  .tracker{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+  .tracker div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 6px;text-align:center;font-size:13px}
+  .tracker .avatar{width:36px;height:36px;font-size:14px;margin:0 auto 6px;opacity:.35;filter:grayscale(1)}
+  .tracker .in .avatar{opacity:1;filter:none}
+  .tracker small{display:block;color:#a9bfb3;font-size:11px;margin-top:2px}
+  .progress{height:10px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-top:10px}
+  .progress b{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--berry));border-radius:99px;transition:width .6s}
+  .mine{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:16px;margin-top:10px}
+  .mine ol{padding-left:20px;color:#dfe9e2;line-height:1.6}
+  .foot{text-align:center;color:#8fa99b;font-size:13px;margin-top:40px}
+  .banner{background:#5b1626;color:#ffd9df;border-radius:12px;padding:10px 12px;font-size:13px;margin-bottom:14px}
+  .loading{display:grid;place-items:center;min-height:60vh;color:#cfe0d6;font-family:'Fraunces',serif;font-style:italic;font-size:20px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="snow"></canvas>
+<canvas id="confetti"></canvas>
+<main id="app"><div class="loading">Untangling the family tree…</div></main>
+
+<script type="module">
+/* =========================================================
+   1. FIREBASE CONFIG  (paste your web app config here)
+   ========================================================= */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBDDSGO7kogGlt_BZ1MmSpBUsMAaGImKiU",
+  authDomain: "family-secret-santa-2026-15c1e.firebaseapp.com",
+  projectId: "family-secret-santa-2026-15c1e",
+  storageBucket: "family-secret-santa-2026-15c1e.firebasestorage.app",
+  messagingSenderId: "358909691010",
+  appId: "1:358909691010:web:a39c0d80b212f9b608609b"
+};
+const DOC_PATH = ["santa2026", "game"];
+
+/* =========================================================
+   2. THE FAMILY
+   ========================================================= */
+const PEOPLE = [
+  { id:"joshua",  name:"Joshua Julien Brouard", first:"Joshua",      tag:"The organiser. Built this app, fears nothing.", color:"#b3263e" },
+  { id:"bianca",  name:"Bianca Palath",         first:"Bianca",      tag:"Joshua's better half (allegedly).",            color:"#c0567a" },
+  { id:"bevan",   name:"Bevan Guiet",           first:"Bevan",       tag:"Married in. No refunds, no exchanges.",        color:"#2f6f8f" },
+  { id:"cherie",  name:"Cherie Guiet",          first:"Cherie",      tag:"The sister. Bevan's boss, er, wife.",          color:"#8a4fb0" },
+  { id:"ethan",   name:"Ethan Schultz",         first:"Ethan",       tag:"Schultz brother, edition one.",                color:"#3c8a5c" },
+  { id:"jesse",   name:"Jesse Schultz",         first:"Jesse",       tag:"Schultz brother, edition two.",                color:"#c96f2d" },
+  { id:"heather", name:"Heather Coleman",       first:"Heather",     tag:"Jesse's girlfriend. Brave woman.",             color:"#d18a9e" },
+  { id:"jp",      name:"Jean-Pierre Brouard",   first:"Jean-Pierre", tag:"Dad. The OG Brouard.",                         color:"#5a6b7a" },
+  { id:"theresa", name:"Theresa Hamburg",       first:"Theresa",     tag:"Mom. Where all of this began.",                color:"#a8772a" },
+];
+const BY_ID = Object.fromEntries(PEOPLE.map(p => [p.id, p]));
+const IDS = PEOPLE.map(p => p.id);
+const PARTNER = { joshua:"bianca", bianca:"joshua", bevan:"cherie", cherie:"bevan", jesse:"heather", heather:"jesse" };
+const allowed = (g, r) => g !== r && PARTNER[g] !== r;
+
+/* =========================================================
+   3. THE JOKES  (receiver -> giver -> line; "_" is the fallback)
+   ========================================================= */
+const JOKES = {
+  joshua: {
+    _: "You got Joshua. He built this entire app, so he will absolutely know if you skimped.",
+    bevan: "Your brother-in-law. Bro code says no socks, and Cherie will be checking.",
+    cherie: "Your little brother. Years of sibling score-keeping, settled with one perfectly chosen gift.",
+    ethan: "Joshua. Brother, self-appointed Secret Santa CEO and app developer. He rigged nothing. Probably.",
+    jesse: "Joshua. He made the app, he made the rules, and now he's your problem. Make it count.",
+    heather: "Joshua, your boyfriend's brother. Keep it wholesome, Bianca's watching.",
+    theresa: "Your son Joshua. Whatever you get him, act surprised when he says he loves it.",
+    jp: "Your son. You've been buying him presents since he was tiny. You know the drill, just don't go back to socks.",
+  },
+  bianca: {
+    _: "Bianca! Choose wisely. Joshua is personally reviewing all gifts to his girlfriend for quality control.",
+    bevan: "Bianca. You're married, she's taken. Keep it friendly and don't make Joshua jealous.",
+    cherie: "Bianca. Your brother's girlfriend. Spoil her and you'll have an ally for life.",
+    ethan: "Bianca! Easy, tiger. Your brother's girlfriend. Don't make Joshua jealous.",
+    jesse: "Bianca! Careful now. Nothing too thoughtful, we don't want Joshua getting jealous.",
+    heather: "Bianca. Founding member of the Girlfriends' Union, alongside you. Solidarity forever.",
+    theresa: "Bianca. Consider this your official mother-in-law audition. Be nice.",
+    jp: "Bianca. Your son's girlfriend. A golden chance to be the cool almost-father-in-law. No pressure.",
+  },
+  bevan: {
+    _: "Bevan. Married into this family voluntarily. Honestly, the man deserves something nice.",
+    joshua: "Your brother-in-law Bevan. Get it wrong and Cherie will hear about it before you've wrapped it.",
+    bianca: "Bevan. He's married, you're taken. Keep it wholesome and keep Joshua un-jealous.",
+    ethan: "Bevan, your brother-in-law. Lads' rules apply: practical, under R200, no candles.",
+    jesse: "Bevan, your brother-in-law. Lads' rules apply: practical, under R200, no candles.",
+    heather: "Bevan. Fellow 'not born into this' survivor. The outlaws must stick together.",
+    theresa: "Your son-in-law. Remember, he puts up with your daughter every day. Be generous.",
+    jp: "Bevan. Your ex-wife's daughter's husband. We'll let you draw that family tree yourself.",
+  },
+  cherie: {
+    _: "Cherie! Sister energy. She will know if it's a regift.",
+    joshua: "Your sister. You've known her your whole life and still have no idea what she wants. Read the list.",
+    bianca: "Cherie, your boyfriend's sister. Win her over and you win the family.",
+    ethan: "Your sister Cherie. Pick well or this gets brought up every Christmas until 2050.",
+    jesse: "Your sister Cherie. Pick well or this gets brought up every Christmas until 2050.",
+    heather: "Cherie, Jesse's sister. Impress her and you're basically in.",
+    theresa: "Your daughter Cherie. No favourites, the boys are watching very closely.",
+    jp: "Cherie. Your ex-wife's daughter. Awkward? Only if you make it awkward.",
+  },
+  ethan: {
+    _: "Ethan. Half brother, full chaos.",
+    joshua: "Half brother Ethan. Half the DNA, full gift expectations.",
+    bianca: "Ethan. Careful, Bianca. Don't make Joshua jealous.",
+    bevan: "Ethan, your brother-in-law. Lekker gift, under R200, job done.",
+    cherie: "Your brother Ethan. You've survived him this long, now buy him something.",
+    jesse: "Your brother Ethan. Payback time for every fight over the remote.",
+    heather: "Ethan, your boyfriend's brother. Your chance to out-gift Jesse. Take it.",
+    theresa: "Your son Ethan. Just don't get him a better gift than Jesse. Or do. We love the drama.",
+    jp: "Ethan. Not your son, not not family. Christmas is weird like that.",
+  },
+  jesse: {
+    _: "Jesse. Schultz brother, edition two.",
+    joshua: "Half brother Jesse. Get it right or Heather will be disappointed in you.",
+    bianca: "Jesse! Easy now, Bianca. Don't make Joshua jealous.",
+    bevan: "Jesse, your brother-in-law. Lekker gift, under R200, job done.",
+    cherie: "Your brother Jesse. Choose something better than whatever he got you last year.",
+    ethan: "Your brother Jesse. Payback time for every fight over the remote.",
+    theresa: "Your son Jesse. Just don't get him a better gift than Ethan. Or do. We love the drama.",
+    jp: "Jesse. Your ex-wife's son from her next chapter. Merry Christmas to the blended family.",
+  },
+  heather: {
+    _: "Heather, Jesse's girlfriend. She's in the Secret Santa now, so she's officially family. No backing out.",
+    joshua: "Heather, your brother's girlfriend. Keep it wholesome, Bianca's watching.",
+    bianca: "Heather. The other half of the Girlfriends' Union. Make it a good one.",
+    bevan: "Heather. Fellow outlaw who wasn't born into this. Look after your own.",
+    cherie: "Heather, your brother's girlfriend. Be the sister-in-law everyone hopes for.",
+    ethan: "Heather, your brother's girlfriend. Out-gift Jesse and make him look bad. Christmas magic.",
+    theresa: "Heather, your son's girlfriend. A chance to be the mother-in-law of legend.",
+    jp: "Heather. Even we need a diagram for how you two are connected. Just roll with it.",
+  },
+  jp: {
+    _: "Jean-Pierre. The OG Brouard. Please, not another mug.",
+    joshua: "Your dad. He'll say 'you shouldn't have.' Make him actually mean it.",
+    bianca: "Jean-Pierre, your boyfriend's dad. This is basically a job interview.",
+    bevan: "Jean-Pierre. Your wife's mom's ex-husband. Good luck explaining that one at the braai.",
+    cherie: "Jean-Pierre. Your mom's ex. Christmas brings everyone together, ja?",
+    ethan: "Jean-Pierre. Your mom's ex. Christmas brings everyone together, ja?",
+    jesse: "Jean-Pierre. Your mom's ex. Christmas brings everyone together, ja?",
+    heather: "Jean-Pierre. Your boyfriend's mom's ex-husband. Yes, it's real. Smile and wave.",
+    theresa: "Jean-Pierre. Your EX-HUSBAND. Of all the names in the hat. Keep it festive and keep it under R200.",
+  },
+  theresa: {
+    _: "Theresa. Mom. The woman who started all of this, quite literally.",
+    joshua: "Mom. She raised you. R200 is an absolute bargain.",
+    bianca: "Theresa, your boyfriend's mom. The stakes have never been higher.",
+    bevan: "Your mother-in-law. You know exactly how much is riding on this.",
+    cherie: "Mom. She raised you. R200 is an absolute bargain.",
+    ethan: "Mom. Time to finally pay her back for all those school lunches.",
+    jesse: "Mom. Time to finally pay her back for all those school lunches.",
+    heather: "Theresa, your boyfriend's mom. The stakes have never been higher.",
+    jp: "Theresa. Your EX-WIFE. The universe has jokes. Buy her something nice and back away slowly.",
+  },
+};
+const jokeFor = (giver, receiver) => (JOKES[receiver] && (JOKES[receiver][giver] || JOKES[receiver]._)) || "Good luck!";
+
+/* =========================================================
+   4. DRAW LOGIC  (random, couples blocked, never dead-ends)
+   ========================================================= */
+function canComplete(givers, receivers){
+  if (!givers.length) return true;
+  const [g, ...rest] = givers;
+  for (const r of receivers){
+    if (allowed(g, r) && canComplete(rest, receivers.filter(x => x !== r))) return true;
+  }
+  return false;
+}
+function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function pickReceiver(assignments, me){
+  if (assignments[me]) return assignments[me];
+  const taken = new Set(Object.values(assignments));
+  const free = IDS.filter(id => !taken.has(id));
+  const pendingGivers = IDS.filter(id => !assignments[id] && id !== me);
+  for (const r of shuffle(free.filter(r => allowed(me, r)))){
+    if (canComplete(pendingGivers, free.filter(x => x !== r))) return r;
+  }
+  return null;
+}
+
+/* =========================================================
+   5. STORAGE  (Firebase, or local demo mode if not configured)
+   ========================================================= */
+const CONFIGURED = !String(FIREBASE_CONFIG.apiKey).startsWith("PASTE");
+let store;
+
+async function makeFirebaseStore(){
+  const v = "10.12.2";
+  const { initializeApp } = await import(`https://www.gstatic.com/firebasejs/${v}/firebase-app.js`);
+  const fs = await import(`https://www.gstatic.com/firebasejs/${v}/firebase-firestore.js`);
+  const db = fs.getFirestore(initializeApp(FIREBASE_CONFIG));
+  const ref = fs.doc(db, ...DOC_PATH);
+  return {
+    subscribe(cb, onErr){ return fs.onSnapshot(ref, s => cb(s.exists() ? s.data() : {}), onErr); },
+    saveProfile(id, profile){ return fs.setDoc(ref, { people: { [id]: profile } }, { merge:true }); },
+    draw(id){
+      return fs.runTransaction(db, async tx => {
+        const s = await tx.get(ref);
+        const a = (s.exists() && s.data().assignments) || {};
+        if (a[id]) return a[id];
+        const r = pickReceiver(a, id);
+        if (!r) throw new Error("No valid match left. Tell Joshua!");
+        tx.set(ref, { assignments: { [id]: r } }, { merge:true });
+        return r;
+      });
+    }
+  };
+}
+function makeLocalStore(){
+  const KEY = "santa-demo-db";
+  const subs = new Set();
+  const read = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return mem; } };
+  let mem = {};
+  const write = d => { mem = d; try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} subs.forEach(cb => cb(d)); };
+  return {
+    subscribe(cb){ subs.add(cb); setTimeout(() => cb(read()), 0); return () => subs.delete(cb); },
+    async saveProfile(id, profile){ const d = read(); d.people = { ...(d.people||{}), [id]: { ...((d.people||{})[id]||{}), ...profile } }; write(d); },
+    async draw(id){ const d = read(); d.assignments = d.assignments || {}; const r = pickReceiver(d.assignments, id); if(!r) throw new Error("No valid match left"); d.assignments[id] = r; write(d); return r; },
+  };
+}
+
+/* =========================================================
+   6. APP STATE + HELPERS
+   ========================================================= */
+const S = { data:{ people:{}, assignments:{} }, me:null, view:"home", loaded:false, pendingId:null };
+const $app = document.getElementById("app");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const linkify = s => esc(s).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">link ↗</a>');
+const initials = p => p.first === "Jean-Pierre" ? "JP" : p.name.split(" ").filter(Boolean).slice(0,2).map(w => w[0]).join("");
+const avatar = (p, extra="") => `<div class="avatar" style="background:${p.color}" ${extra}>${initials(p)}</div>`;
+const normEmail = e => String(e||"").trim().toLowerCase();
+const LS = "santa-me";
+const saveMe = v => { try { v ? localStorage.setItem(LS, JSON.stringify(v)) : localStorage.removeItem(LS); } catch {} };
+const loadMe = () => { try { return JSON.parse(localStorage.getItem(LS)); } catch { return null; } };
+const people = () => S.data.people || {};
+const assignments = () => S.data.assignments || {};
+
+function go(view, extra = {}){ Object.assign(S, extra, { view }); render(); window.scrollTo({ top:0, behavior:"smooth" }); }
+
+/* =========================================================
+   7. VIEWS
+   ========================================================= */
+function vHome(){
+  const joined = Object.keys(people()).length;
+  return `
+  <section class="screen">
+    <div class="hero">
+      <span class="eyebrow">Brouard · Guiet · Schultz · Hamburg · Palath · Coleman</span>
+      <h1>Secret Santa <em>'26</em></h1>
+      <p class="lede">Nine people. One wildly complicated family tree. One very simple gift exchange.</p>
+      <div class="stamp">Diagram of who's related to who not included</div>
+      <div class="budget">
+        <div class="pill"><span>Budget</span><b>R150 – R200</b></div>
+        <div class="pill"><span>Joined so far</span><b>${joined} / ${PEOPLE.length}</b></div>
+      </div>
+    </div>
+    <div class="rules">
+      <div class="rule"><span class="n">1</span><div>Find your name and tell us your email (that's your password to get back in).</div></div>
+      <div class="rule"><span class="n">2</span><div>Write a wish list of up to 5 things. Links welcome. Be realistic, it's R200 not a Black Friday miracle.</div></div>
+      <div class="rule"><span class="n">3</span><div>Unwrap your present to find out who you're buying for. Couples can't draw each other, so nobody cheats.</div></div>
+      <div class="rule"><span class="n">4</span><div>Keep it secret. Yes, Mom, that includes you.</div></div>
+    </div>
+    <button class="btn gold mt" data-go="pick">Let's go 🎅</button>
+    <p class="foot">Made with questionable amounts of festive spirit by Joshua.</p>
+  </section>`;
+}
+
+function vPick(){
+  const P = people();
+  return `
+  <section class="screen">
+    <div class="topbar"><button class="back" data-go="home">← Back</button><div class="steps"><i class="on"></i><i></i><i></i></div></div>
+    <span class="eyebrow">Step 1</span>
+    <h1 style="font-size:38px;margin-top:6px">Who are you?</h1>
+    <p style="color:#cfe0d6;margin-top:6px">Tap your name. Tapping someone else's is very un-Christmassy.</p>
+    <div class="grid">
+      ${PEOPLE.map(p => `
+        <button class="person" data-pick="${p.id}">
+          ${P[p.id] ? `<span class="badge">✓ In</span>` : ""}
+          ${avatar(p)}
+          <b>${esc(p.name)}</b>
+          <small>${esc(p.tag)}</small>
+        </button>`).join("")}
+    </div>
+  </section>`;
+}
+
+function vVerify(){
+  const p = BY_ID[S.pendingId];
+  return `
+  <section class="screen">
+    <div class="topbar"><button class="back" data-go="pick">← Back</button></div>
+    <div class="card">
+      <div style="display:flex;gap:12px;align-items:center">${avatar(p)}<div><span class="eyebrow" style="color:var(--berry)">Welcome back</span><h2 style="font-size:26px">${esc(p.first)}</h2></div></div>
+      <p class="sub mt-s">You've already joined. Pop in the email you signed up with to get back to your page.</p>
+      <form id="verifyForm">
+        <label for="vemail">Your email</label>
+        <input id="vemail" type="email" autocomplete="email" required placeholder="you@example.com">
+        <div class="err" id="verr"></div>
+        <button class="btn mt-s" type="submit">Let me in</button>
+      </form>
+    </div>
+  </section>`;
+}
+
+function vForm(){
+  const id = S.pendingId || S.me;
+  const p = BY_ID[id];
+  const existing = people()[id] || {};
+  const w = existing.wishes || [];
+  const editing = !!existing.email;
+  const placeholders = ["Something you'd genuinely use", "A book, a game, a gadget…", "That snack you're obsessed with", "A link to the exact thing works too", "Wildcard. Surprise me."];
+  return `
+  <section class="screen">
+    <div class="topbar"><button class="back" data-go="${editing && S.me ? "dash" : "pick"}">← Back</button><div class="steps"><i class="on"></i><i class="on"></i><i></i></div></div>
+    <div class="card">
+      <div style="display:flex;gap:12px;align-items:center">${avatar(p)}<div><span class="eyebrow" style="color:var(--berry)">${editing ? "Edit your list" : "Step 2"}</span><h2 style="font-size:26px">Hi ${esc(p.first)} 👋</h2></div></div>
+      <form id="wishForm" novalidate>
+        <label for="fname">Full name</label>
+        <input id="fname" value="${esc(existing.name || p.name)}" required>
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" value="${esc(existing.email || "")}" placeholder="you@example.com" required ${editing ? "readonly" : ""}>
+        <p class="hint">${editing ? "Your email is your key, so it stays as is." : "This is how you'll get back in later, so use one you'll remember."}</p>
+        <label>Your wish list (R150 to R200 each)</label>
+        ${[0,1,2,3,4].map(i => `
+          <div class="wish"><span class="num">${i+1}</span><input class="wishIn" value="${esc(w[i] || "")}" placeholder="${placeholders[i]}" maxlength="240"></div>`).join("")}
+        <p class="hint">Fill in at least 3. Your Santa doesn't have to stick to it, but it saves everyone a panic trip to the mall on the 23rd.</p>
+        <label for="notes">Anything else your Santa should know? (optional)</label>
+        <textarea id="notes" maxlength="400" placeholder="Sizes, favourite colours, allergies, things you already own…">${esc(existing.notes || "")}</textarea>
+        <div class="err" id="ferr"></div>
+        <button class="btn mt-s" type="submit" id="saveBtn">${editing ? "Save changes" : "Save my list & draw my person 🎁"}</button>
+      </form>
+    </div>
+  </section>`;
+}
+
+function vDraw(){
+  return `
+  <section class="screen stage">
+    <span class="eyebrow">Step 3</span>
+    <h2 class="mt-s">Your person is in here.</h2>
+    <p id="drawMsg">Tap the present three times to unwrap it.</p>
+    <div class="gift" id="gift" role="button" aria-label="Unwrap your present" tabindex="0">
+      <div class="lid"><div class="bow"></div></div>
+      <div class="box"></div>
+    </div>
+    <div class="taps" id="taps"><i></i><i></i><i></i></div>
+    <div id="revealSlot" style="width:100%"></div>
+  </section>`;
+}
+
+function revealCard(rid){
+  const r = BY_ID[rid];
+  return `
+  <div class="reveal">
+    <div class="card">
+      ${avatar(r)}
+      <span class="eyebrow" style="color:var(--berry)">You're buying for</span>
+      <h2>${esc(r.first)}</h2>
+      <p class="joke">“${esc(jokeFor(S.me, rid))}”</p>
+      <button class="btn mt" data-go="dash">See ${esc(r.first)}'s wish list →</button>
+    </div>
+  </div>`;
+}
+
+function vDash(){
+  const me = BY_ID[S.me];
+  const rid = assignments()[S.me];
+  const P = people();
+  const myProfile = P[S.me] || {};
+  const joined = Object.keys(P).length;
+  const drawn = Object.keys(assignments()).length;
+
+  let target;
+  if (!rid){
+    target = `<div class="card center"><h2>You haven't unwrapped yours yet</h2><p class="sub mt-s">Your present is waiting.</p><button class="btn mt" data-go="draw">Unwrap my person 🎁</button></div>`;
+  } else {
+    const r = BY_ID[rid];
+    const rp = P[rid];
+    const wishes = (rp && rp.wishes || []).filter(Boolean);
+    target = `
+    <div class="card target">
+      <div class="ribbon"></div>
+      <span class="eyebrow" style="color:var(--berry)">Your secret person</span>
+      <div class="who">${avatar(r)}<h2>${esc(r.name)}</h2></div>
+      <p class="joke" style="margin-left:0;text-align:left;font-size:17px">“${esc(jokeFor(S.me, rid))}”</p>
+      ${wishes.length ? `
+        <ul class="list">${wishes.map((w,i) => `<li><span class="num">${i+1}</span><div>${linkify(w)}</div></li>`).join("")}</ul>
+        ${rp.notes ? `<div class="note"><b>Notes from ${esc(r.first)}:</b> ${linkify(rp.notes)}</div>` : ""}
+        <p class="hint">The list is a guide, not a contract. Budget: R150 to R200.</p>`
+      : `
+        <div class="waiting"><div class="dots">•••</div><b>${esc(r.first)} hasn't written a wish list yet.</b><br>This page updates live, so check back soon. Or give them a nudge, subtly. You're a secret agent now.</div>`}
+    </div>`;
+  }
+
+  return `
+  <section class="screen">
+    ${CONFIGURED ? "" : `<div class="banner">Demo mode: saving to this device only. Add the Firebase config to share with the family.</div>`}
+    <div class="hello">
+      <div><span class="eyebrow">Signed in as</span><h1>${esc(me.first)} ${me.first === "Joshua" ? "🎄" : ""}</h1></div>
+      <button class="back" id="logout">Not you?</button>
+    </div>
+    ${target}
+
+    <h3 class="section-title">Your wish list</h3>
+    <div class="mine">
+      ${(myProfile.wishes||[]).filter(Boolean).length
+        ? `<ol>${myProfile.wishes.filter(Boolean).map(w => `<li>${linkify(w)}</li>`).join("")}</ol>`
+        : `<p style="color:#cfe0d6">Empty. Your Santa is currently guessing. Nobody wants that.</p>`}
+      <button class="btn ghost small mt-s" data-edit="1">✏️ Edit my list</button>
+    </div>
+
+    <h3 class="section-title">Family progress</h3>
+    <p style="color:#cfe0d6;font-size:14px">${joined} of ${PEOPLE.length} have joined · ${drawn} presents unwrapped</p>
+    <div class="progress"><b style="width:${(joined/PEOPLE.length)*100}%"></b></div>
+    <div class="tracker mt-s">
+      ${PEOPLE.map(p => `<div class="${P[p.id] ? "in" : ""}">${avatar(p)}${esc(p.first)}<small>${P[p.id] ? (assignments()[p.id] ? "drawn ✓" : "joined") : "waiting…"}</small></div>`).join("")}
+    </div>
+    <p class="foot">Shhh. 🤫 Nobody else can see who you've got.</p>
+  </section>`;
+}
+
+/* =========================================================
+   8. RENDER + EVENTS
+   ========================================================= */
+function render(){
+  if (!S.loaded){ return; }
+  if (S.me && !people()[S.me] && S.view === "dash"){ S.view = "home"; S.me = null; saveMe(null); }
+  const views = { home:vHome, pick:vPick, verify:vVerify, form:vForm, draw:vDraw, dash:vDash };
+  // Don't re-render the draw screen mid-animation on live updates
+  if (S.view === "draw" && $app.querySelector("#gift") && S._drawRendered) return;
+  $app.innerHTML = views[S.view]();
+  S._drawRendered = S.view === "draw";
+  bind();
+}
+
+function bind(){
+  $app.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  $app.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => {
+    const id = b.dataset.pick;
+    go(people()[id] ? "verify" : "form", { pendingId:id });
+  });
+  $app.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => go("form", { pendingId:S.me }));
+  const lo = $app.querySelector("#logout");
+  if (lo) lo.onclick = () => { saveMe(null); go("home", { me:null }); };
+
+  const vf = $app.querySelector("#verifyForm");
+  if (vf) vf.onsubmit = e => {
+    e.preventDefault();
+    const typed = normEmail($app.querySelector("#vemail").value);
+    const real = normEmail(people()[S.pendingId]?.email);
+    if (typed && typed === real){
+      saveMe({ id:S.pendingId }); go(assignments()[S.pendingId] ? "dash" : "draw", { me:S.pendingId });
+    } else {
+      $app.querySelector("#verr").textContent = "That's not the email we have. Are you sure you're " + BY_ID[S.pendingId].first + "? 🤨";
+    }
+  };
+
+  const wf = $app.querySelector("#wishForm");
+  if (wf) wf.onsubmit = async e => {
+    e.preventDefault();
+    const id = S.pendingId || S.me;
+    const err = $app.querySelector("#ferr");
+    const name = $app.querySelector("#fname").value.trim();
+    const email = normEmail($app.querySelector("#email").value);
+    const wishes = [...$app.querySelectorAll(".wishIn")].map(i => i.value.trim());
+    const notes = $app.querySelector("#notes").value.trim();
+    if (!name) return err.textContent = "We need your name. Even Santa has one.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return err.textContent = "That email looks a bit dodgy. Try again?";
+    if (wishes.filter(Boolean).length < 3) return err.textContent = "Give your Santa at least 3 ideas. Help them help you.";
+    const existing = people()[id];
+    if (existing && existing.email && normEmail(existing.email) !== email) return err.textContent = "Someone's already signed up as this person.";
+    const btn = $app.querySelector("#saveBtn"); btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      await store.saveProfile(id, { name, email, wishes, notes, updatedAt: new Date().toISOString(), ...(existing ? {} : { joinedAt: new Date().toISOString() }) });
+      saveMe({ id });
+      go(assignments()[id] ? "dash" : "draw", { me:id, pendingId:null });
+    } catch (ex){
+      console.error(ex); btn.disabled = false; btn.textContent = "Try again";
+      err.textContent = "Couldn't save. Check your connection and try again.";
+    }
+  };
+
+  const gift = $app.querySelector("#gift");
+  if (gift) setupGift(gift);
+}
+
+function setupGift(gift){
+  let taps = 0, result = null, error = null, drawing = null, opened = false;
+  const dots = [...$app.querySelectorAll("#taps i")];
+  const msg = $app.querySelector("#drawMsg");
+  const lines = ["Ooh, it rattles…", "Getting warmer…"];
+  const tap = async () => {
+    if (opened) return;
+    if (!drawing) drawing = store.draw(S.me).then(r => result = r).catch(e => error = e);
+    taps = Math.min(taps + 1, 3);
+    dots.forEach((d,i) => d.classList.toggle("on", i < taps));
+    gift.classList.remove("shake"); void gift.offsetWidth; gift.classList.add("shake");
+    if (taps < 3){ msg.textContent = lines[taps-1]; return; }
+    opened = true; msg.textContent = "Unwrapping…";
+    await drawing;
+    if (error){ console.error(error); opened = false; taps = 0; drawing = null; dots.forEach(d => d.classList.remove("on")); msg.textContent = "The elves dropped it. Check your connection and tap again."; return; }
+    gift.classList.add("open");
+    confetti();
+    msg.textContent = "";
+    setTimeout(() => {
+      $app.querySelector("#revealSlot").innerHTML = revealCard(result);
+      $app.querySelectorAll("#revealSlot [data-go]").forEach(b => b.onclick = () => { S._drawRendered = false; go(b.dataset.go); });
+    }, 450);
+  };
+  gift.onclick = tap;
+  gift.onkeydown = e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); tap(); } };
+}
+
+/* =========================================================
+   9. EFFECTS: snow + confetti
+   ========================================================= */
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+(function snow(){
+  const c = document.getElementById("snow"), x = c.getContext("2d");
+  let W, H, flakes;
+  const size = () => { W = c.width = innerWidth * devicePixelRatio; H = c.height = innerHeight * devicePixelRatio; c.style.width = innerWidth+"px"; c.style.height = innerHeight+"px"; };
+  size(); addEventListener("resize", size);
+  flakes = Array.from({ length: Math.min(90, Math.floor(innerWidth/8)) }, () => ({ x:Math.random()*W, y:Math.random()*H, r:(Math.random()*2.2+.6)*devicePixelRatio, s:Math.random()*.6+.25, d:Math.random()*Math.PI*2 }));
+  const tick = () => {
+    x.clearRect(0,0,W,H); x.fillStyle = "rgba(255,255,255,.75)";
+    for (const f of flakes){
+      f.y += f.s*devicePixelRatio; f.d += .01; f.x += Math.sin(f.d)*.35*devicePixelRatio;
+      if (f.y > H){ f.y = -5; f.x = Math.random()*W; }
+      x.beginPath(); x.arc(f.x,f.y,f.r,0,Math.PI*2); x.fill();
+    }
+    if (!reduce) requestAnimationFrame(tick);
+  };
+  tick();
+})();
+function confetti(){
+  if (reduce) return;
+  const c = document.getElementById("confetti"), x = c.getContext("2d");
+  const W = c.width = innerWidth*devicePixelRatio, H = c.height = innerHeight*devicePixelRatio;
+  c.style.width = innerWidth+"px"; c.style.height = innerHeight+"px";
+  const cols = ["#e0a940","#b3263e","#f7f0e3","#7fc6a4","#c0567a"];
+  const bits = Array.from({ length:160 }, () => ({ x:W/2, y:H*.42, vx:(Math.random()-.5)*22*devicePixelRatio, vy:(-Math.random()*20-6)*devicePixelRatio, w:(Math.random()*8+5)*devicePixelRatio, h:(Math.random()*5+3)*devicePixelRatio, a:Math.random()*6, va:(Math.random()-.5)*.4, c:cols[Math.floor(Math.random()*cols.length)] }));
+  let t = 0;
+  const tick = () => {
+    x.clearRect(0,0,W,H);
+    for (const b of bits){ b.vy += .55*devicePixelRatio; b.vx *= .99; b.x += b.vx; b.y += b.vy; b.a += b.va;
+      x.save(); x.translate(b.x,b.y); x.rotate(b.a); x.fillStyle = b.c; x.fillRect(-b.w/2,-b.h/2,b.w,b.h); x.restore(); }
+    if (++t < 200) requestAnimationFrame(tick); else x.clearRect(0,0,W,H);
+  };
+  tick();
+}
+
+/* =========================================================
+   10. BOOT
+   ========================================================= */
+(async function boot(){
+  try {
+    store = CONFIGURED ? await makeFirebaseStore() : makeLocalStore();
+  } catch (e){
+    console.error(e);
+    $app.innerHTML = `<div class="loading">Couldn't reach the North Pole. Refresh and try again.</div>`;
+    return;
+  }
+  const saved = loadMe();
+  store.subscribe(d => {
+    S.data = { people: d.people || {}, assignments: d.assignments || {} };
+    if (!S.loaded){
+      S.loaded = true;
+      if (saved && S.data.people[saved.id]){ S.me = saved.id; S.view = S.data.assignments[saved.id] ? "dash" : "draw"; }
+    }
+    render();
+  }, err => {
+    console.error(err);
+    $app.innerHTML = `<div class="loading">The elves can't reach the database. Refresh, or tell Joshua.</div>`;
+  });
+})();
+</script>
+</body>
+</html>
