@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Family Secret Santa 2026</title>
-<meta name="description" content="Nine people. One wildly complicated family tree. R150 to R200 each.">
+<meta name="description" content="Nine people. One family. R150 to R200 each.">
 <meta property="og:title" content="Family Secret Santa 2026 🎁">
-<meta property="og:description" content="Nine people. One wildly complicated family tree. Pick your name, write your wish list, unwrap your person.">
+<meta property="og:description" content="Nine people. One family. Pick your name, write your wish list, unwrap your person.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,800;1,9..144,500;1,9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -177,15 +177,15 @@ const DOC_PATH = ["santa2026", "game"];
    2. THE FAMILY
    ========================================================= */
 const PEOPLE = [
-  { id:"joshua",  name:"Joshua Julien Brouard", first:"Joshua",      tag:"The organiser. Built this app, fears nothing.", color:"#b3263e" },
-  { id:"bianca",  name:"Bianca Palath",         first:"Bianca",      tag:"Joshua's better half (allegedly).",            color:"#c0567a" },
-  { id:"bevan",   name:"Bevan Guiet",           first:"Bevan",       tag:"Married in. No refunds, no exchanges.",        color:"#2f6f8f" },
-  { id:"cherie",  name:"Cherie Guiet",          first:"Cherie",      tag:"The sister. Bevan's boss, er, wife.",          color:"#8a4fb0" },
-  { id:"ethan",   name:"Ethan Schultz",         first:"Ethan",       tag:"Schultz brother, edition one.",                color:"#3c8a5c" },
-  { id:"jesse",   name:"Jesse Schultz",         first:"Jesse",       tag:"Schultz brother, edition two.",                color:"#c96f2d" },
-  { id:"heather", name:"Heather Coleman",       first:"Heather",     tag:"Jesse's girlfriend. Brave woman.",             color:"#d18a9e" },
-  { id:"jp",      name:"Jean-Pierre Brouard",   first:"Jean-Pierre", tag:"Dad. The OG Brouard.",                         color:"#5a6b7a" },
-  { id:"theresa", name:"Theresa Hamburg",       first:"Theresa",     tag:"Mom. Where all of this began.",                color:"#a8772a" },
+  { id:"joshua",  name:"Joshua Julien Brouard", first:"Joshua",      tag:"The organiser and resident tech nerd.", color:"#b3263e" },
+  { id:"bianca",  name:"Bianca Palath",         first:"Bianca",      tag:"Joshua's girlfriend.",            color:"#c0567a" },
+  { id:"bevan",   name:"Bevan Guiet",           first:"Bevan",       tag:"Gentleman and PlayStation pro.",        color:"#2f6f8f" },
+  { id:"cherie",  name:"Cherie Guiet",          first:"Cherie",      tag:"Mom of two. Kindest person here.",          color:"#8a4fb0" },
+  { id:"ethan",   name:"Ethan Schultz",         first:"Ethan",       tag:"Schultz brother.",                color:"#3c8a5c" },
+  { id:"jesse",   name:"Jesse Schultz",         first:"Jesse",       tag:"Schultz brother. New office guy.",                color:"#c96f2d" },
+  { id:"heather", name:"Heather Coleman",       first:"Heather",     tag:"Teacher. Professional small-human wrangler.",             color:"#d18a9e" },
+  { id:"jp",      name:"Jean-Pierre Brouard",   first:"Jean-Pierre", tag:"Dad. Practical man, top-tier gift giver.",                         color:"#5a6b7a" },
+  { id:"theresa", name:"Theresa Hamburg",       first:"Theresa",     tag:"Mom. Queen of practical.",                color:"#a8772a" },
 ];
 const BY_ID = Object.fromEntries(PEOPLE.map(p => [p.id, p]));
 const IDS = PEOPLE.map(p => p.id);
@@ -197,97 +197,40 @@ const allowed = (g, r) => g !== r && PARTNER[g] !== r;
    ========================================================= */
 const JOKES = {
   joshua: {
-    _: "You got Joshua. He built this entire app, so he will absolutely know if you skimped.",
-    bevan: "Your brother-in-law. Bro code says no socks, and Cherie will be checking.",
-    cherie: "Your little brother. Years of sibling score-keeping, settled with one perfectly chosen gift.",
-    ethan: "Joshua. Brother, self-appointed Secret Santa CEO and app developer. He rigged nothing. Probably.",
-    jesse: "Joshua. He made the app, he made the rules, and now he's your problem. Make it count.",
-    heather: "Joshua, your boyfriend's brother. Keep it wholesome, Bianca's watching.",
-    theresa: "Your son Joshua. Whatever you get him, act surprised when he says he loves it.",
-    jp: "Your son. You've been buying him presents since he was tiny. You know the drill, just don't go back to socks.",
+    _: "Joshua. Certified tech nerd. If it has a USB-C port, a cable or a tiny glowing light, you're on the right track.",
+    jp: "Your son, the family tech nerd. Anything with a plug will do. He'll happily explain how it works for 45 minutes.",
+    theresa: "Your son, the family tech nerd. Anything with a plug will do. He'll happily explain how it works for 45 minutes.",
   },
   bianca: {
-    _: "Bianca! Choose wisely. Joshua is personally reviewing all gifts to his girlfriend for quality control.",
-    bevan: "Bianca. You're married, she's taken. Keep it friendly and don't make Joshua jealous.",
-    cherie: "Bianca. Your brother's girlfriend. Spoil her and you'll have an ally for life.",
-    ethan: "Bianca! Easy, tiger. Your brother's girlfriend. Don't make Joshua jealous.",
-    jesse: "Bianca! Careful now. Nothing too thoughtful, we don't want Joshua getting jealous.",
-    heather: "Bianca. Founding member of the Girlfriends' Union, alongside you. Solidarity forever.",
-    theresa: "Bianca. Consider this your official mother-in-law audition. Be nice.",
-    jp: "Bianca. Your son's girlfriend. A golden chance to be the cool almost-father-in-law. No pressure.",
+    _: "Bianca! Have a good look at her wish list, pick something thoughtful, and enjoy being her favourite person for a day.",
   },
   bevan: {
-    _: "Bevan. Married into this family voluntarily. Honestly, the man deserves something nice.",
-    joshua: "Your brother-in-law Bevan. Get it wrong and Cherie will hear about it before you've wrapped it.",
-    bianca: "Bevan. He's married, you're taken. Keep it wholesome and keep Joshua un-jealous.",
-    ethan: "Bevan, your brother-in-law. Lads' rules apply: practical, under R200, no candles.",
-    jesse: "Bevan, your brother-in-law. Lads' rules apply: practical, under R200, no candles.",
-    heather: "Bevan. Fellow 'not born into this' survivor. The outlaws must stick together.",
-    theresa: "Your son-in-law. Remember, he puts up with your daughter every day. Be generous.",
-    jp: "Bevan. Your ex-wife's daughter's husband. We'll let you draw that family tree yourself.",
+    _: "Bevan. Gentleman, all-round nice guy, PlayStation enthusiast. A PlayStation voucher fits the budget nicely. Just saying.",
   },
   cherie: {
-    _: "Cherie! Sister energy. She will know if it's a regift.",
-    joshua: "Your sister. You've known her your whole life and still have no idea what she wants. Read the list.",
-    bianca: "Cherie, your boyfriend's sister. Win her over and you win the family.",
-    ethan: "Your sister Cherie. Pick well or this gets brought up every Christmas until 2050.",
-    jesse: "Your sister Cherie. Pick well or this gets brought up every Christmas until 2050.",
-    heather: "Cherie, Jesse's sister. Impress her and you're basically in.",
-    theresa: "Your daughter Cherie. No favourites, the boys are watching very closely.",
-    jp: "Cherie. Your ex-wife's daughter. Awkward? Only if you make it awkward.",
+    _: "Cherie. Officially the kindest person in this app. Something cosy and just for her (not for the kids, for once) will go down a treat.",
   },
   ethan: {
-    _: "Ethan. Half brother, full chaos.",
-    joshua: "Half brother Ethan. Half the DNA, full gift expectations.",
-    bianca: "Ethan. Careful, Bianca. Don't make Joshua jealous.",
-    bevan: "Ethan, your brother-in-law. Lekker gift, under R200, job done.",
-    cherie: "Your brother Ethan. You've survived him this long, now buy him something.",
-    jesse: "Your brother Ethan. Payback time for every fight over the remote.",
-    heather: "Ethan, your boyfriend's brother. Your chance to out-gift Jesse. Take it.",
-    theresa: "Your son Ethan. Just don't get him a better gift than Jesse. Or do. We love the drama.",
-    jp: "Ethan. Not your son, not not family. Christmas is weird like that.",
+    _: "Ethan! Have a look at his wish list below and choose something from it. That's the best way to get it right.",
   },
   jesse: {
-    _: "Jesse. Schultz brother, edition two.",
-    joshua: "Half brother Jesse. Get it right or Heather will be disappointed in you.",
-    bianca: "Jesse! Easy now, Bianca. Don't make Joshua jealous.",
-    bevan: "Jesse, your brother-in-law. Lekker gift, under R200, job done.",
-    cherie: "Your brother Jesse. Choose something better than whatever he got you last year.",
-    ethan: "Your brother Jesse. Payback time for every fight over the remote.",
-    theresa: "Your son Jesse. Just don't get him a better gift than Ethan. Or do. We love the drama.",
-    jp: "Jesse. Your ex-wife's son from her next chapter. Merry Christmas to the blended family.",
+    _: "Jesse. Recently traded being his own boss for office life. Something for the desk, the commute or surviving Monday meetings is a solid bet.",
   },
   heather: {
-    _: "Heather, Jesse's girlfriend. She's in the Secret Santa now, so she's officially family. No backing out.",
-    joshua: "Heather, your brother's girlfriend. Keep it wholesome, Bianca's watching.",
-    bianca: "Heather. The other half of the Girlfriends' Union. Make it a good one.",
-    bevan: "Heather. Fellow outlaw who wasn't born into this. Look after your own.",
-    cherie: "Heather, your brother's girlfriend. Be the sister-in-law everyone hopes for.",
-    ethan: "Heather, your brother's girlfriend. Out-gift Jesse and make him look bad. Christmas magic.",
-    theresa: "Heather, your son's girlfriend. A chance to be the mother-in-law of legend.",
-    jp: "Heather. Even we need a diagram for how you two are connected. Just roll with it.",
+    _: "Heather. She's a teacher, so she already owns roughly 400 'World's Best Teacher' mugs. Do not be mug number 401.",
   },
   jp: {
-    _: "Jean-Pierre. The OG Brouard. Please, not another mug.",
-    joshua: "Your dad. He'll say 'you shouldn't have.' Make him actually mean it.",
-    bianca: "Jean-Pierre, your boyfriend's dad. This is basically a job interview.",
-    bevan: "Jean-Pierre. Your wife's mom's ex-husband. Good luck explaining that one at the braai.",
-    cherie: "Jean-Pierre. Your mom's ex. Christmas brings everyone together, ja?",
-    ethan: "Jean-Pierre. Your mom's ex. Christmas brings everyone together, ja?",
-    jesse: "Jean-Pierre. Your mom's ex. Christmas brings everyone together, ja?",
-    heather: "Jean-Pierre. Your boyfriend's mom's ex-husband. Yes, it's real. Smile and wave.",
-    theresa: "Jean-Pierre. Your EX-HUSBAND. Of all the names in the hat. Keep it festive and keep it under R200.",
+    _: "Jean-Pierre. Practical man and a seriously good gift giver. He's set the bar high, so bring your A-game.",
+    joshua: "Your dad. Practical man and a seriously good gift giver. Time to finally return the favour.",
+    theresa: "Jean-Pierre. Your EX-HUSBAND. Of all the names in the hat! Keep it festive, keep it under R200, and maybe keep the receipt.",
   },
   theresa: {
-    _: "Theresa. Mom. The woman who started all of this, quite literally.",
-    joshua: "Mom. She raised you. R200 is an absolute bargain.",
-    bianca: "Theresa, your boyfriend's mom. The stakes have never been higher.",
-    bevan: "Your mother-in-law. You know exactly how much is riding on this.",
-    cherie: "Mom. She raised you. R200 is an absolute bargain.",
-    ethan: "Mom. Time to finally pay her back for all those school lunches.",
-    jesse: "Mom. Time to finally pay her back for all those school lunches.",
-    heather: "Theresa, your boyfriend's mom. The stakes have never been higher.",
-    jp: "Theresa. Your EX-WIFE. The universe has jokes. Buy her something nice and back away slowly.",
+    _: "Theresa. Practical to the core. Something useful she'll actually reach for every week beats anything fancy.",
+    joshua: "Mom! Practical always wins with her. Something useful she'll actually use beats anything flashy.",
+    cherie: "Mom! Practical always wins with her. Something useful she'll actually use beats anything flashy.",
+    ethan: "Mom! Practical always wins with her. Something useful she'll actually use beats anything flashy.",
+    jesse: "Mom! Practical always wins with her. Something useful she'll actually use beats anything flashy.",
+    jp: "Theresa. Your EX-WIFE. The universe clearly has a sense of humour. Something practical, R200 max, then back away slowly.",
   },
 };
 const jokeFor = (giver, receiver) => (JOKES[receiver] && (JOKES[receiver][giver] || JOKES[receiver]._)) || "Good luck!";
@@ -384,17 +327,17 @@ function vHome(){
     <div class="hero">
       <span class="eyebrow">Brouard · Guiet · Schultz · Hamburg · Palath · Coleman</span>
       <h1>Secret Santa <em>'26</em></h1>
-      <p class="lede">Nine people. One wildly complicated family tree. One very simple gift exchange.</p>
-      <div class="stamp">Diagram of who's related to who not included</div>
+      <p class="lede">Nine people. One family. One very simple gift exchange.</p>
+      <div class="stamp">Good vibes and great gifts only</div>
       <div class="budget">
-        <div class="pill"><span>Budget</span><b>R150 – R200</b></div>
+        <div class="pill"><span>Budget</span><b>R150 to R200</b></div>
         <div class="pill"><span>Joined so far</span><b>${joined} / ${PEOPLE.length}</b></div>
       </div>
     </div>
     <div class="rules">
       <div class="rule"><span class="n">1</span><div>Find your name and tell us your email (that's your password to get back in).</div></div>
       <div class="rule"><span class="n">2</span><div>Write a wish list of up to 5 things. Links welcome. Be realistic, it's R200 not a Black Friday miracle.</div></div>
-      <div class="rule"><span class="n">3</span><div>Unwrap your present to find out who you're buying for. Couples can't draw each other, so nobody cheats.</div></div>
+      <div class="rule"><span class="n">3</span><div>Unwrap your present to find out who you're buying for. Couples can't draw each other.</div></div>
       <div class="rule"><span class="n">4</span><div>Keep it secret. Yes, Mom, that includes you.</div></div>
     </div>
     <button class="btn gold mt" data-go="pick">Let's go 🎅</button>
