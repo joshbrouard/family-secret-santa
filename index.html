@@ -173,7 +173,7 @@
     font:600 14px 'Outfit',sans-serif;color:var(--ink);background:var(--gold);border:0;border-radius:999px;padding:10px 14px;
     box-shadow:0 5px 0 #a87822,0 10px 24px rgba(0,0,0,.35);transition:transform .45s cubic-bezier(.3,1.7,.5,1);-webkit-tap-highlight-color:transparent}
   .musicbtn.show{display:inline-flex}
-  .musicbtn.off{background:rgba(255,255,255,.1);color:var(--cream);box-shadow:none;border:1px solid rgba(255,255,255,.2)}
+  .musicbtn.off{background:#163a2f;color:var(--gold-soft);box-shadow:0 6px 18px rgba(0,0,0,.45);border:1.5px solid var(--gold)}
   .musicbtn .eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
   .musicbtn .eq i{width:3px;background:currentColor;border-radius:2px;animation:eq .8s infinite ease-in-out}
   .musicbtn .eq i:nth-child(2){animation-delay:.2s}.musicbtn .eq i:nth-child(3){animation-delay:.4s}
@@ -205,6 +205,41 @@
     100%{transform:translateY(calc(100vh - 100px))}}
   .awe-x.landed{transform:translateY(calc(100vh - 100px));pointer-events:auto}
 
+
+  /* Drunk elf */
+  .elf{position:fixed;top:calc(4px + env(safe-area-inset-top));right:6px;width:78px;height:100px;z-index:45;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+  .elf svg{width:100%;height:100%;overflow:visible;transform-origin:50% 95%;animation:sway 2.3s cubic-bezier(.45,.05,.55,.95) infinite}
+  @keyframes sway{0%{transform:rotate(-9deg) translateX(-2px)}22%{transform:rotate(7deg) translateX(3px)}38%{transform:rotate(-4deg)}
+    55%{transform:rotate(12deg) translateX(4px) translateY(1px)}70%{transform:rotate(-11deg) translateX(-3px)}100%{transform:rotate(-9deg) translateX(-2px)}}
+  .elf .head{transform-origin:50px 46px;animation:bob 1.15s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(10deg) translateY(1px)}}
+  .elf .legL{transform-origin:43px 92px;animation:kickL .58s ease-in-out infinite}
+  .elf .legR{transform-origin:57px 92px;animation:kickR .58s ease-in-out infinite}
+  @keyframes kickL{0%,100%{transform:rotate(14deg)}50%{transform:rotate(-12deg)}}
+  @keyframes kickR{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(16deg)}}
+  .elf .armMug{transform-origin:64px 66px;animation:cheers 2.3s ease-in-out infinite}
+  @keyframes cheers{0%,100%{transform:rotate(0)}40%{transform:rotate(-35deg)}55%{transform:rotate(-28deg)}}
+  .elf .armWave{transform-origin:36px 66px;animation:wave .9s ease-in-out infinite}
+  @keyframes wave{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-40deg)}}
+  .elf .lids{animation:blink 3.7s infinite}
+  @keyframes blink{0%,88%,100%{transform:translateY(0)}92%{transform:translateY(3px)}}
+  .hic{position:fixed;z-index:46;pointer-events:none;font:800 italic 15px 'Fraunces',serif;color:var(--gold-soft);text-shadow:0 2px 6px rgba(0,0,0,.6);
+    animation:hic 1.6s ease-out forwards}
+  @keyframes hic{0%{opacity:0;transform:translate(0,6px) scale(.6)}20%{opacity:1;transform:translate(-4px,-4px) scale(1.1) rotate(-8deg)}100%{opacity:0;transform:translate(-18px,-34px) rotate(-14deg)}}
+  .elf.hiccup svg{animation:hiccup .35s ease-out}
+  @keyframes hiccup{0%{transform:translateY(0)}40%{transform:translateY(-10px) rotate(8deg)}100%{transform:translateY(0)}}
+
+  .elf .frown,.elf .brows{opacity:0}
+  .elf .face{transition:fill .25s}
+  .elf.angry .face{fill:#f0907e}
+  .elf.angry.furious .face{fill:#e2574c}
+  .elf.angry .frown,.elf.angry .brows{opacity:1}
+  .elf.angry .smile,.elf.angry .lids{opacity:0}
+  .elf.angry svg{animation:rage .09s linear infinite}
+  .elf.angry .head,.elf.angry .legL,.elf.angry .legR,.elf.angry .armWave,.elf.angry .armMug{animation-play-state:paused}
+  @keyframes rage{0%{transform:translate(-2px,0) rotate(-3deg)}50%{transform:translate(2px,-1px) rotate(3deg)}100%{transform:translate(-2px,0) rotate(-3deg)}}
+  .hic.mad{color:#ff8a8a;font:800 16px 'Outfit',sans-serif;font-style:normal}
+  @media (max-width:640px){ main{padding-top:96px} }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -231,6 +266,40 @@
   </div>
 </div>
 <button class="awe-x" id="aweX" type="button" aria-label="Close" style="display:none">✕</button>
+<div class="elf" id="elf" role="img" aria-label="A slightly tipsy dancing elf" title="He's had a few eggnogs">
+<svg viewBox="0 0 100 130">
+  <ellipse cx="50" cy="126" rx="22" ry="3.5" fill="rgba(0,0,0,.35)"/>
+  <g class="legL"><path d="M44 92 L41 114" stroke="#f7f0e3" stroke-width="7" stroke-linecap="round"/>
+    <path d="M44 92 L41 114" stroke="#b3263e" stroke-width="7" stroke-linecap="round" stroke-dasharray="3.5 3.5"/>
+    <path d="M37 113 q-9 2 -12 -3 q2 6 13 7 z" fill="#2f7a4f" stroke="#1d5236" stroke-width="1.5"/><circle cx="25" cy="110" r="2" fill="#e0a940"/></g>
+  <g class="legR"><path d="M56 92 L59 114" stroke="#f7f0e3" stroke-width="7" stroke-linecap="round"/>
+    <path d="M56 92 L59 114" stroke="#b3263e" stroke-width="7" stroke-linecap="round" stroke-dasharray="3.5 3.5"/>
+    <path d="M63 113 q9 2 12 -3 q-2 6 -13 7 z" fill="#2f7a4f" stroke="#1d5236" stroke-width="1.5"/><circle cx="75" cy="110" r="2" fill="#e0a940"/></g>
+  <g class="armWave"><path d="M37 66 L22 52" stroke="#2f7a4f" stroke-width="7" stroke-linecap="round"/><circle cx="21" cy="50" r="4.5" fill="#f2c9a0"/></g>
+  <path d="M34 62 Q50 54 66 62 L70 94 Q50 100 30 94 Z" fill="#2f7a4f" stroke="#1d5236" stroke-width="1.5"/>
+  <path d="M30 94 l4 -6 l4 6 l4 -6 l4 6 l4 -6 l4 6 l4 -6 l4 6 l4 -6 l2 6" fill="#e0a940"/>
+  <rect x="32" y="78" width="36" height="6" fill="#3b2416"/><rect x="45.5" y="77" width="9" height="8" rx="1.5" fill="none" stroke="#e0a940" stroke-width="2"/>
+  <g class="armMug"><path d="M63 66 L76 56" stroke="#2f7a4f" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="77" cy="55" r="4.5" fill="#f2c9a0"/>
+    <g transform="rotate(-12 82 46)"><rect x="76" y="37" width="12" height="14" rx="2" fill="#f7f0e3" stroke="#8c6a3c" stroke-width="1.5"/>
+      <path d="M88 40 q5 0 5 5 q0 5 -5 5" fill="none" stroke="#8c6a3c" stroke-width="1.8"/>
+      <path d="M75 38 q3 -5 7 -2 q3 -4 7 1 q2 3 -1 4 h-12 q-3 -1 -1 -3z" fill="#fffaf1"/>
+      <path d="M86 51 q1 4 -1 7" stroke="#fff3d6" stroke-width="1.6" fill="none" stroke-linecap="round"/></g></g>
+  <g class="head">
+    <path d="M30 40 L18 33 L31 46 Z" fill="#f2c9a0" stroke="#d9a47a" stroke-width="1"/>
+    <path d="M70 40 L82 33 L69 46 Z" fill="#f2c9a0" stroke="#d9a47a" stroke-width="1"/>
+    <circle class="face" cx="50" cy="44" r="19" fill="#f2c9a0"/>
+    <circle cx="39" cy="50" r="5" fill="#e8798a" opacity=".75"/><circle cx="62" cy="50" r="5" fill="#e8798a" opacity=".75"/>
+    <ellipse cx="43" cy="43" rx="3.6" ry="3.2" fill="#fff"/><ellipse cx="57" cy="42" rx="4.4" ry="3.8" fill="#fff"/>
+    <circle cx="44" cy="44" r="1.7" fill="#1d1a17"/><circle cx="56" cy="43.5" r="1.9" fill="#1d1a17"/>
+    <g class="lids"><path d="M39 42.5 q4 -4 8 0 v-3 h-8z" fill="#e2b48b"/><path d="M52.5 41.5 q4.5 -4.5 9 0 v-3.5 h-9z" fill="#e2b48b"/></g>
+    <circle cx="50" cy="49" r="3.6" fill="#d23c4f"/><circle cx="49" cy="48" r="1" fill="#fff" opacity=".7"/>
+    <path class="smile" d="M42 55 q5 6 10 1 q3 -3 6 1" fill="none" stroke="#7a3a2a" stroke-width="1.8" stroke-linecap="round"/><path class="frown" d="M42 58 q8 -6 16 0" fill="none" stroke="#7a1a1a" stroke-width="2.4" stroke-linecap="round"/><g class="brows"><path d="M38 36 L48 40" stroke="#3b2416" stroke-width="3" stroke-linecap="round"/><path d="M62 35 L52 39.5" stroke="#3b2416" stroke-width="3" stroke-linecap="round"/></g>
+    <path d="M31 33 Q50 24 69 33 L62 30 Q74 10 92 16 Q76 18 70 34 Z" fill="#2f7a4f" stroke="#1d5236" stroke-width="1.5"/>
+    <path d="M30 33 Q50 25 70 33 Q70 38 66 38 Q50 32 34 38 Q30 38 30 33z" fill="#fffaf1"/>
+    <circle cx="93" cy="16" r="4.5" fill="#fffaf1"/>
+  </g>
+</svg></div>
 <main id="app"><div class="loading">Untangling the family tree…</div></main>
 
 <script type="module">
@@ -952,6 +1021,43 @@ function hypeAt(){
   speechSynthesis.cancel(); speechSynthesis.speak(u);
 }
 if ("speechSynthesis" in window) { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); }
+
+
+/* =========================================================
+   9f. DRUNK ELF
+   ========================================================= */
+(function elf(){
+  const el = document.getElementById("elf");
+  const words = ["hic!","*hic*","hic! 🍺","…merry chrishmus","hic hic!","whoopsie","I'm fiiine","*burp*"];
+  const hic = (word) => {
+    const r = el.getBoundingClientRect();
+    const h = document.createElement("div"); h.className = "hic";
+    h.textContent = word || words[Math.floor(Math.random()*words.length)];
+    document.body.appendChild(h);
+    h.style.left = (r.left - h.offsetWidth + 18) + "px"; h.style.top = (r.top + 18) + "px";
+    setTimeout(() => h.remove(), 1700);
+    el.classList.remove("hiccup"); void el.offsetWidth; el.classList.add("hiccup");
+  };
+  const MAD = ["OI! 💢","Do you MIND?!","I'm on my BREAK!","Hands off, bru!","Touch me again. I dare you.","Not the hat!!","I will tell Santa 😤",
+    "Who ARE you?!","Eish, personal space!","I'm calling HR 📞","Bru. BRU.","That's assault on an elf"];
+  let madBag = [], clicks = 0, calm = null;
+  el.addEventListener("click", e => {
+    e.stopPropagation();
+    if (!madBag.length) madBag = shuffle(MAD);
+    clicks++;
+    el.classList.add("angry"); el.classList.toggle("furious", clicks >= 3);
+    const r = el.getBoundingClientRect();
+    document.querySelectorAll(".hic.mad").forEach(x => x.remove());
+    const h = document.createElement("div"); h.className = "hic mad";
+    h.textContent = clicks >= 5 ? "THAT'S IT. 💢💢💢" : madBag.pop();
+    document.body.appendChild(h);
+    h.style.left = Math.max(8, r.left - h.offsetWidth + 20) + "px"; h.style.top = (r.top + 22) + "px";
+    setTimeout(() => h.remove(), 1700);
+    clearTimeout(calm);
+    calm = setTimeout(() => { el.classList.remove("angry","furious"); clicks = 0; hic("…hic"); }, 1800 + Math.min(clicks, 5) * 400);
+  });
+  (function loop(){ setTimeout(() => { if (!document.hidden && !el.classList.contains("angry")) hic(Math.random() < .7 ? "hic!" : null); loop(); }, 5000 + Math.random()*7000); })();
+})();
 
 /* =========================================================
    10. BOOT
