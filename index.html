@@ -595,7 +595,7 @@ function bind(){
   };
 
   const wf = $app.querySelector("#wishForm");
-  if (wf && (S.pendingId || S.me) === "jesse"){
+  if (wf && ((S.pendingId || S.me) === "jesse" || new URLSearchParams(location.search).has("hype"))){
     wf.querySelectorAll(".wishIn").forEach(inp => inp.addEventListener("change", () => { if (inp.value.trim()) hypeAt(inp); }));
   }
   if (wf) wf.onsubmit = async e => {
