@@ -805,7 +805,7 @@ const FACTS = [
   const setState = on => {
     playing = on;
     btn.classList.toggle("off", !on);
-    lbl.textContent = on ? (dodged ? "OK fine, tap to stop" : "Make it stop") : "Bring Rick back 🎵";
+    lbl.textContent = on ? (dodged ? "OK fine, tap to stop" : "Make it stop") : "MORE RICK 🎵";
     try { localStorage.setItem(KEY, on ? "on" : "off"); } catch {}
   };
 
