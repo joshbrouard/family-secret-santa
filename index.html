@@ -204,6 +204,7 @@
     85%{transform:translateY(calc(100vh - 150px))}
     100%{transform:translateY(calc(100vh - 100px))}}
   .awe-x.landed{transform:translateY(calc(100vh - 100px));pointer-events:auto}
+
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -594,6 +595,9 @@ function bind(){
   };
 
   const wf = $app.querySelector("#wishForm");
+  if (wf && (S.pendingId || S.me) === "jesse"){
+    wf.querySelectorAll(".wishIn").forEach(inp => inp.addEventListener("change", () => { if (inp.value.trim()) hypeAt(inp); }));
+  }
   if (wf) wf.onsubmit = async e => {
     e.preventDefault();
     const id = S.pendingId || S.me;
@@ -894,7 +898,8 @@ const FACTS = [
 
   window.santaMusic = {
     play(){ try { localStorage.removeItem(KEY); } catch {} if (player && ready){ player.playVideo(); setState(true); } else start(); },
-    lock(on){ btn.style.visibility = on ? "hidden" : ""; }
+    lock(on){ btn.style.visibility = on ? "hidden" : ""; },
+    duck(on){ try { player && ready && player.setVolume(on ? 8 : 40); } catch {} }
   };
   btn.addEventListener("click", e => {
     e.stopPropagation();
@@ -922,6 +927,31 @@ function showAwe(){
     window.santaMusic && santaMusic.lock(false);
   };
 }
+
+
+/* =========================================================
+   9e. HYPE PHRASES (Jesse's wish list only)
+   ========================================================= */
+const HYPE = ["Lekker! 🤙","Aibo! 😳","Yes queen 💅","You type that, big boy 💪","Sho, sharp sharp 👌","Eish, good one",
+  "Ja nee, solid choice","Ayoba! 🎉","Jislaaik! 🤯","Hectic, bru 🔥","Main character energy ✨","Okay Mr Office Man 💼",
+  "Santa is taking notes 📝","Now we're cooking 🍳","Write it down, chief ✍️","Bru, that's a vibe 😎","Big wish energy 🎁","Not you being ambitious 👀"];
+let hypeBag = [];
+const sayable = t => t.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, "").trim();
+function pickVoice(){
+  const vs = speechSynthesis.getVoices();
+  return vs.find(v => /en[-_]ZA/i.test(v.lang)) || vs.find(v => /en[-_]GB/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null;
+}
+function hypeAt(){
+  if (!("speechSynthesis" in window)) return;
+  if (!hypeBag.length) hypeBag = shuffle(HYPE);
+  const u = new SpeechSynthesisUtterance(sayable(hypeBag.pop()));
+  const v = pickVoice(); if (v) { u.voice = v; u.lang = v.lang; }
+  u.rate = 1; u.pitch = 1.15; u.volume = 1;
+  u.onstart = () => window.santaMusic && santaMusic.duck(true);
+  u.onend = u.onerror = () => window.santaMusic && santaMusic.duck(false);
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+if ("speechSynthesis" in window) { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); }
 
 /* =========================================================
    10. BOOT
