@@ -166,6 +166,19 @@
   .fact .bar b{display:block;height:100%;width:0;background:var(--gold);border-radius:2px}
   .fact .bar b.run{animation:factfill linear forwards}
   @keyframes factfill{to{width:100%}}
+
+  /* Music button */
+  #rick{position:fixed;left:-9999px;top:0;width:200px;height:200px;opacity:0;pointer-events:none}
+  .musicbtn{position:fixed;right:14px;bottom:130px;z-index:60;display:none;align-items:center;gap:8px;cursor:pointer;
+    font:600 14px 'Outfit',sans-serif;color:var(--ink);background:var(--gold);border:0;border-radius:999px;padding:10px 14px;
+    box-shadow:0 5px 0 #a87822,0 10px 24px rgba(0,0,0,.35);transition:transform .45s cubic-bezier(.3,1.7,.5,1);-webkit-tap-highlight-color:transparent}
+  .musicbtn.show{display:inline-flex}
+  .musicbtn.off{background:rgba(255,255,255,.1);color:var(--cream);box-shadow:none;border:1px solid rgba(255,255,255,.2)}
+  .musicbtn .eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
+  .musicbtn .eq i{width:3px;background:currentColor;border-radius:2px;animation:eq .8s infinite ease-in-out}
+  .musicbtn .eq i:nth-child(2){animation-delay:.2s}.musicbtn .eq i:nth-child(3){animation-delay:.4s}
+  .musicbtn.off .eq i{animation:none;height:3px}
+  @keyframes eq{0%,100%{height:3px}50%{height:12px}}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -182,6 +195,8 @@
     </div>
   </div>
 </div>
+<div id="rick"></div>
+<button class="musicbtn" id="musicBtn" type="button"><span class="eq"><i></i><i></i><i></i></span><span id="musicLbl">Make it stop</span></button>
 <main id="app"><div class="loading">Untangling the family tree…</div></main>
 
 <script type="module">
@@ -771,6 +786,79 @@ const FACTS = [
   box.onclick = next;
   box.onkeydown = e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); next(); } };
   show(true);
+})();
+
+
+/* =========================================================
+   9c. BACKGROUND MUSIC (you know the one)
+   ========================================================= */
+(function music(){
+  const VIDEO = "dQw4w9WgXcQ";
+  const KEY = "santa-music";
+  const btn = document.getElementById("musicBtn"), lbl = document.getElementById("musicLbl");
+  let pref; try { pref = localStorage.getItem(KEY); } catch {}
+  let player = null, ready = false, playing = false, dodged = false, busy = false;
+
+  const place = () => { const fb = document.querySelector(".factbar"); btn.style.bottom = ((fb ? fb.offsetHeight : 100) + 12) + "px"; };
+  addEventListener("resize", place);
+
+  const setState = on => {
+    playing = on;
+    btn.classList.toggle("off", !on);
+    lbl.textContent = on ? (dodged ? "OK fine, tap to stop" : "Make it stop") : "Bring Rick back 🎵";
+    try { localStorage.setItem(KEY, on ? "on" : "off"); } catch {}
+  };
+
+  function loadApi(cb){
+    if (window.YT && YT.Player) return cb();
+    window.onYouTubeIframeAPIReady = cb;
+    const t = document.createElement("script"); t.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(t);
+  }
+  function start(){
+    if (player){ player.playVideo(); return; }
+    loadApi(() => {
+      player = new YT.Player("rick", {
+        videoId: VIDEO, width: 200, height: 200,
+        playerVars: { autoplay: 1, loop: 1, playlist: VIDEO, controls: 0, playsinline: 1 },
+        events: {
+          onReady: e => { ready = true; e.target.setVolume(40); e.target.unMute(); e.target.playVideo(); },
+          onStateChange: e => { if (e.data === 1){ place(); btn.classList.add("show"); setState(true); } }
+        }
+      });
+    });
+  }
+
+  // First interaction anywhere starts the music (browsers block sound before that)
+  const kick = () => { removeEventListener("pointerdown", kick, true); removeEventListener("keydown", kick, true); if (pref === "off"){ place(); btn.classList.add("show"); setState(false); } else start(); };
+  addEventListener("pointerdown", kick, true);
+  addEventListener("keydown", kick, true);
+
+  // The dodge: first attempt to stop it sends the button bouncing around the screen
+  function dodge(){
+    busy = true; lbl.textContent = "Nope 😏";
+    const r = btn.getBoundingClientRect();
+    const hops = 5; let n = 0;
+    const hop = () => {
+      if (n++ < hops){
+        const x = -(Math.random() * (innerWidth - r.width - 28));
+        const y = -(Math.random() * (innerHeight - r.height - 200));
+        btn.style.transform = `translate(${x}px, ${y}px) rotate(${(Math.random()-.5)*30}deg)`;
+        setTimeout(hop, 480);
+      } else {
+        btn.style.transform = "";
+        setTimeout(() => { dodged = true; busy = false; setState(true); }, 450);
+      }
+    };
+    hop();
+  }
+
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    if (busy) return;
+    if (playing && !dodged && !matchMedia("(prefers-reduced-motion: reduce)").matches) return dodge();
+    if (playing){ player && player.pauseVideo(); setState(false); }
+    else { if (player && ready){ player.playVideo(); setState(true); } else start(); }
+  });
 })();
 
 /* =========================================================
