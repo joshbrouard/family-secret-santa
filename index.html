@@ -802,34 +802,40 @@ const FACTS = [
   const place = () => { const fb = document.querySelector(".factbar"); btn.style.bottom = ((fb ? fb.offsetHeight : 100) + 12) + "px"; };
   addEventListener("resize", place);
 
-  const setState = on => {
+  const setState = (on, save = true) => {
     playing = on;
     btn.classList.toggle("off", !on);
     lbl.textContent = on ? (dodged ? "OK fine, tap to stop" : "Make it stop") : "MORE RICK 🎵";
-    try { localStorage.setItem(KEY, on ? "on" : "off"); } catch {}
+    if (save) { try { localStorage.setItem(KEY, on ? "on" : "off"); } catch {} }
   };
+  // Button is always on screen: "MORE RICK" until the music is actually playing
+  place(); btn.classList.add("show"); setState(false, false);
+  setTimeout(place, 1500);
 
   function loadApi(cb){
     if (window.YT && YT.Player) return cb();
     window.onYouTubeIframeAPIReady = cb;
     const t = document.createElement("script"); t.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(t);
   }
+  let starting = false;
   function start(){
     if (player){ player.playVideo(); return; }
+    if (starting) return; starting = true;
     loadApi(() => {
       player = new YT.Player("rick", {
         videoId: VIDEO, width: 200, height: 200,
         playerVars: { autoplay: 1, loop: 1, playlist: VIDEO, controls: 0, playsinline: 1 },
         events: {
           onReady: e => { ready = true; e.target.setVolume(40); e.target.unMute(); e.target.playVideo(); },
-          onStateChange: e => { if (e.data === 1){ place(); btn.classList.add("show"); setState(true); } }
+          onStateChange: e => { if (e.data === 1){ place(); setState(true); } },
+          onError: () => setState(false, false)
         }
       });
     });
   }
 
   // First interaction anywhere starts the music (browsers block sound before that)
-  const kick = () => { removeEventListener("pointerdown", kick, true); removeEventListener("keydown", kick, true); if (pref === "off"){ place(); btn.classList.add("show"); setState(false); } else start(); };
+  const kick = () => { removeEventListener("pointerdown", kick, true); removeEventListener("keydown", kick, true); if (pref !== "off") start(); };
   addEventListener("pointerdown", kick, true);
   addEventListener("keydown", kick, true);
 
