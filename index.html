@@ -179,6 +179,31 @@
   .musicbtn .eq i:nth-child(2){animation-delay:.2s}.musicbtn .eq i:nth-child(3){animation-delay:.4s}
   .musicbtn.off .eq i{animation:none;height:3px}
   @keyframes eq{0%,100%{height:3px}50%{height:12px}}
+
+  /* AWE MA SE KIND popup */
+  .awe{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(5,18,14,.82);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+  .awe.open{display:flex}
+  .awe-card{position:relative;width:min(440px,100%);background:var(--paper);border-radius:24px;padding:22px 18px 18px;text-align:center;
+    box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 6px var(--gold);animation:aweIn .7s cubic-bezier(.2,1.6,.4,1) both}
+  @keyframes aweIn{0%{transform:scale(.2) rotate(-25deg);opacity:0}100%{transform:none;opacity:1}}
+  .awe-title{font-family:'Fraunces',serif;font-weight:800;font-style:italic;font-size:clamp(38px,11vw,58px);line-height:.95;color:var(--berry);
+    letter-spacing:-.02em;text-shadow:3px 3px 0 var(--gold);animation:wobble 1.6s ease-in-out infinite;margin-bottom:14px}
+  @keyframes wobble{0%,100%{transform:rotate(-3deg) scale(1)}50%{transform:rotate(3deg) scale(1.06)}}
+  .awe-card img{width:100%;border-radius:16px;display:block;border:4px solid #fff;box-shadow:0 8px 20px rgba(0,0,0,.25);animation:zoomy 2.4s ease-in-out infinite}
+  @keyframes zoomy{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+  .awe-sub{margin-top:12px;font-weight:600;color:var(--muted);font-size:15px}
+  .awe-x{position:fixed;left:50%;top:14px;z-index:81;width:56px;height:56px;margin-left:-28px;border-radius:50%;border:0;cursor:pointer;
+    background:var(--berry);color:#fff;font:800 26px 'Outfit',sans-serif;box-shadow:0 6px 0 var(--berry-dark),0 12px 24px rgba(0,0,0,.4);
+    -webkit-tap-highlight-color:transparent}
+  .awe-x.drop{animation:xdrop 2.2s cubic-bezier(.3,0,.4,1) forwards;pointer-events:none}
+  @keyframes xdrop{
+    0%{transform:translateY(0)}
+    45%{transform:translateY(calc(100vh - 100px))}
+    60%{transform:translateY(calc(100vh - 230px))}
+    75%{transform:translateY(calc(100vh - 100px))}
+    85%{transform:translateY(calc(100vh - 150px))}
+    100%{transform:translateY(calc(100vh - 100px))}}
+  .awe-x.landed{transform:translateY(calc(100vh - 100px));pointer-events:auto}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -197,6 +222,14 @@
 </div>
 <div id="rick"></div>
 <button class="musicbtn" id="musicBtn" type="button"><span class="eq"><i></i><i></i><i></i></span><span id="musicLbl">Make it stop</span></button>
+<div class="awe" id="awe" role="dialog" aria-label="Awe ma se kind">
+  <div class="awe-card">
+    <div class="awe-title">AWE MA<br>SE KIND</div>
+    <img src="awe.jpg" alt="Awe ma se kind">
+    <p class="awe-sub">Welcome to Secret Santa, Jesse 🎅</p>
+  </div>
+</div>
+<button class="awe-x" id="aweX" type="button" aria-label="Close" style="display:none">✕</button>
 <main id="app"><div class="loading">Untangling the family tree…</div></main>
 
 <script type="module">
@@ -578,6 +611,7 @@ function bind(){
     try {
       await store.saveProfile(id, { name, email, wishes, notes, updatedAt: new Date().toISOString(), ...(existing ? {} : { joinedAt: new Date().toISOString() }) });
       notifySanta(id, existing ? "update" : "new");
+      if (id === "jesse" && !existing) setTimeout(showAwe, 300);
       saveMe({ id });
       go(assignments()[id] ? "dash" : "draw", { me:id, pendingId:null });
     } catch (ex){
@@ -858,6 +892,10 @@ const FACTS = [
     hop();
   }
 
+  window.santaMusic = {
+    play(){ try { localStorage.removeItem(KEY); } catch {} if (player && ready){ player.playVideo(); setState(true); } else start(); },
+    lock(on){ btn.style.visibility = on ? "hidden" : ""; }
+  };
   btn.addEventListener("click", e => {
     e.stopPropagation();
     if (busy) return;
@@ -867,9 +905,28 @@ const FACTS = [
   });
 })();
 
+
+/* =========================================================
+   9d. AWE MA SE KIND (Jesse's welcome)
+   ========================================================= */
+function showAwe(){
+  const ov = document.getElementById("awe"), x = document.getElementById("aweX");
+  ov.classList.add("open");
+  window.santaMusic && (santaMusic.play(), santaMusic.lock(true));
+  confetti();
+  x.style.display = "block"; x.className = "awe-x";
+  void x.offsetWidth; x.classList.add("drop");
+  x.addEventListener("animationend", () => { x.classList.remove("drop"); x.classList.add("landed"); }, { once:true });
+  x.onclick = () => {
+    ov.classList.remove("open"); x.style.display = "none"; x.className = "awe-x";
+    window.santaMusic && santaMusic.lock(false);
+  };
+}
+
 /* =========================================================
    10. BOOT
    ========================================================= */
+if (new URLSearchParams(location.search).has("awe")) addEventListener("pointerdown", function once(){ removeEventListener("pointerdown", once, true); setTimeout(showAwe, 50); }, true);
 (async function boot(){
   try {
     store = CONFIGURED ? await makeFirebaseStore() : makeLocalStore();
